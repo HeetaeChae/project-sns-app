@@ -24,7 +24,12 @@ const NavbarWrapper = styled.div`
 const MainWrapper = styled.div`
   padding: 0 calc((100vw - 1500px) / 2);
   margin-top: 5rem;
-  padding-top: 30px;
+  padding-top: 60px;
+`;
+const FooterWrapper = styled.div`
+  padding: 0 calc((100vw - 1000px) / 2);
+  padding-top: 60px;
+  width: 100%;
 `;
 
 const Layout = ({ children }) => {
@@ -43,7 +48,9 @@ const Layout = ({ children }) => {
           </Col>
         </Row>
       </MainWrapper>
-      <Footer />
+      <FooterWrapper>
+        <Footer />
+      </FooterWrapper>
     </LayoutWrapper>
   );
 };

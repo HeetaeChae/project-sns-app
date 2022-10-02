@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import Login from "./Login/Login";
 
 import Menubar from "./Menubar/Menubar";
 import User from "./User/User";
@@ -15,6 +16,7 @@ const Tab = () => {
   return (
     <TabWrapper>
       <User />
+      <Login />
       <Menubar />
     </TabWrapper>
   );

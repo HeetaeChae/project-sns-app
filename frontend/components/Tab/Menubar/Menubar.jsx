@@ -1,5 +1,10 @@
-import { Menu } from "antd";
-import { HomeOutlined, BookOutlined, TeamOutlined } from "@ant-design/icons";
+import { Menu, Badge, Avatar, Card } from "antd";
+import {
+  HomeOutlined,
+  BookOutlined,
+  TeamOutlined,
+  HeartTwoTone,
+} from "@ant-design/icons";
 
 const Menubar = () => {
   return (
@@ -26,6 +31,15 @@ const Menubar = () => {
         <Menu.Item key="follow" icon={<TeamOutlined />}>
           팔로우
         </Menu.Item>
+        <Badge.Ribbon text="Like" color="pink">
+          <Card title="받은 좋아요 수" size="small">
+            <HeartTwoTone
+              twoToneColor="#eb2f96"
+              style={{ margin: "0 10px", fontSize: "1rem" }}
+            />
+            10k
+          </Card>
+        </Badge.Ribbon>
       </Menu>
     </div>
   );

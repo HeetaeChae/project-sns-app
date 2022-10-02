@@ -1,4 +1,4 @@
-import { Avatar, Card, Input } from "antd";
+import { Avatar, Card, Input, Button, Modal } from "antd";
 import { DeleteOutlined } from "@ant-design/icons";
 import styled from "styled-components";
 
@@ -6,19 +6,37 @@ const { Meta } = Card;
 const { TextArea } = Input;
 
 const CommentWrapper = styled.div`
-  margin-bottom: 30px;
+  margin: 30px;
   display: flex;
   justify-content: space-between;
   align-items: center;
+`;
+const DateDeleteWrapper = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 120px;
 `;
 
 const Comment = () => {
   const onChange = (e) => {
     console.log("Change:", e.target.value);
   };
+  const deleteSuccess = () => {
+    Modal.success({
+      content: "댓글을 삭제하였습니다.",
+    });
+  };
+  const deleteFail = () => {
+    Modal.error({
+      content: "자신이 작성한 댓글만 삭제할 수 있습니다.",
+    });
+  };
   return (
     <>
-      <Card style={{ padding: "30px" }} extra="코멘트 목록">
+      {/* 해당 포스트의 코멘트 갯수 */}
+      <Card extra="총 3개의 코멘트">
+        {/* 해당 포스트의 코멘트 map으로 렌더링 */}
         <CommentWrapper>
           <Meta
             avatar={<Avatar src="https://joeschmoe.io/api/v1/random" />}
@@ -26,46 +44,13 @@ const Comment = () => {
             description="댓글 뭐라고 쓸까"
             style={{ marginBottom: "20px" }}
           />
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "space-between",
-              width: "100px",
-            }}
-          >
+          <DateDeleteWrapper>
             <div>22-10-1</div>
-            <div>
-              삭제
+            <Button type="primary">
               <DeleteOutlined />
-            </div>
-          </div>
+            </Button>
+          </DateDeleteWrapper>
         </CommentWrapper>
-        <CommentWrapper>
-          <Meta
-            avatar={<Avatar src="https://joeschmoe.io/api/v1/random" />}
-            title="닉네임"
-            description="댓글 뭐라고 쓸까"
-            style={{ marginBottom: "20px" }}
-          />
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "space-between",
-              width: "100px",
-            }}
-          >
-            <div>22-10-1</div>
-            <div>
-              삭제
-              <DeleteOutlined />
-            </div>
-          </div>
-        </CommentWrapper>
-        <Meta
-          avatar={<Avatar src="https://joeschmoe.io/api/v1/random" />}
-          title="닉네임"
-          description="댓글 뭐라고 쓸까"
-        />
       </Card>
       <TextArea
         showCount
