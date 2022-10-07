@@ -1,46 +1,51 @@
-import { Avatar, Card, Button, Form, Input } from "antd";
+import { useRouter } from "next/router";
+import { Card, Button, Form, Input } from "antd";
 import { LoginOutlined, UserAddOutlined } from "@ant-design/icons";
+import { useDispatch, useSelector } from "react-redux";
+import { logInRequest } from "../../../store/modules/user";
+import styled from "styled-components";
+
+const ButtonWrapper = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  padding-top: 30px;
+  border-top: 1px solid rgb(235, 237, 240);
+`;
 
 const { Meta } = Card;
 
 const Login = () => {
-  const onFinish = (values) => {
-    console.log("Success:", values);
+  const dispatch = useDispatch();
+  const user = useSelector((state) => state.user);
+  const router = useRouter();
+
+  const onFinish = (data) => {
+    console.log("Success:", data);
+    dispatch(logInRequest(data));
   };
-  const onFinishFailed = (errorInfo) => {
-    console.log("Failed:", errorInfo);
-  };
+
   return (
     <Card
       style={{
-        width: 250,
+        width: 320,
         marginBottom: 30,
         marginRight: 5,
       }}
-      actions={[
-        <Button>
-          <UserAddOutlined key="signup" />
-          회원가입
-        </Button>,
-        <Button type="primary">
-          <LoginOutlined key="login" />
-          로그 인
-        </Button>,
-      ]}
     >
       <Form
         name="basic"
         labelCol={{
-          span: 9,
+          span: 24,
         }}
         wrapperCol={{
-          span: 15,
+          span: 24,
         }}
         initialValues={{
           remember: true,
         }}
         onFinish={onFinish}
-        onFinishFailed={onFinishFailed}
         autoComplete="off"
       >
         <Form.Item
@@ -67,8 +72,29 @@ const Login = () => {
         >
           <Input.Password />
         </Form.Item>
+        <ButtonWrapper>
+          <Form.Item>
+            <Button onClick={() => router.push("/signup")}>
+              <UserAddOutlined key="signup" />
+              회원가입
+            </Button>
+          </Form.Item>
+          <Form.Item>
+            {user.isLoggingIn ? (
+              <Button type="primary" htmlType="submit" loading>
+                <LoginOutlined key="login" />
+                로그 인
+              </Button>
+            ) : (
+              <Button type="primary" htmlType="submit">
+                <LoginOutlined key="login" />
+                로그 인
+              </Button>
+            )}
+          </Form.Item>
+        </ButtonWrapper>
       </Form>
-      <Meta title="인증방식 JWT" description="SNS-APP에 접속해보세요!" />
+      <Meta description="SNS-APP에 접속해보세요!" />
     </Card>
   );
 };

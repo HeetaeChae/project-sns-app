@@ -62,6 +62,7 @@ const PageHeaderStyle = styled(PageHeader)`
 const Signup = () => {
   const [nickname, setNickname] = useState("");
   const [isSuccessModal, setIsSuccessModal] = useState(false);
+
   const handleOk = useCallback(() => {
     setIsSuccessModal(false);
     setNickname("");
@@ -75,7 +76,13 @@ const Signup = () => {
 
   const passwordCheckModal = () => {
     Modal.error({
-      content: "비밀번호가 다릅니다. ",
+      content: "비밀번호가 다릅니다.",
+      centered: true,
+    });
+  };
+  const emailCheckModal = () => {
+    Modal.error({
+      content: "이미 존재하는 이메일입니다.",
       centered: true,
     });
   };
@@ -90,7 +97,7 @@ const Signup = () => {
         setNickname(res.data.doc.nickname);
         setIsSuccessModal(true);
       } else {
-        console.log(res.data);
+        emailCheckModal();
       }
     });
   };

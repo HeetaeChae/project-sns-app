@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import Login from "./Login/Login";
+import { useSelector } from "react-redux";
 
 import Menubar from "./Menubar/Menubar";
 import User from "./User/User";
@@ -13,10 +14,10 @@ const TabWrapper = styled.div`
 `;
 
 const Tab = () => {
+  const isLoggedIn = useSelector((state) => state.user.isLoggedIn);
   return (
     <TabWrapper>
-      <User />
-      <Login />
+      {isLoggedIn ? <User /> : <Login />}
       <Menubar />
     </TabWrapper>
   );
