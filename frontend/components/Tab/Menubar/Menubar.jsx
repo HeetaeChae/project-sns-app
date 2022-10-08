@@ -10,16 +10,14 @@ const Menubar = () => {
   return (
     <div
       style={{
-        marginTop: "10px",
-        marginBottom: "10px",
         border: "1px solid rgb(242, 243, 246)",
-        width: "250px",
+        width: "300px",
       }}
     >
       <Menu
         mode="inline"
         style={{
-          width: 250,
+          width: 300,
         }}
       >
         <Menu.Item key="home" icon={<HomeOutlined />}>

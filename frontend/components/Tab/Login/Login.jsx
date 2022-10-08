@@ -22,7 +22,7 @@ const Login = () => {
   const router = useRouter();
 
   const onFinish = (data) => {
-    console.log("Success:", data);
+    console.log(data);
     dispatch(logInRequest(data));
   };
 
@@ -54,7 +54,8 @@ const Login = () => {
           rules={[
             {
               required: true,
-              message: "이메일 필수입력",
+              message: "이메일 형식이 아닙니다.",
+              type: "email",
             },
           ]}
         >
@@ -66,7 +67,7 @@ const Login = () => {
           rules={[
             {
               required: true,
-              message: "비밀번호 필수입력",
+              message: "비밀번호를 입력해주세요.",
             },
           ]}
         >

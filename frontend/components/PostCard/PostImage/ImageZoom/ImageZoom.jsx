@@ -15,7 +15,7 @@ const ImageZoom = ({ open, setOpen, image }) => {
 
   return (
     <Modal
-      title="총 10장의 이미지"
+      title={`총 ${image.length}개의 이미지`}
       centered
       open={open}
       onOk={() => setOpen(false)}
@@ -26,7 +26,11 @@ const ImageZoom = ({ open, setOpen, image }) => {
         {image &&
           image.map((image) => (
             <div>
-              <img src={image} style={{ width: "100%" }} />
+              <img
+                key={image}
+                src={`http://localhost:7000/${image}`}
+                style={{ width: "100%" }}
+              />
             </div>
           ))}
       </Slider>

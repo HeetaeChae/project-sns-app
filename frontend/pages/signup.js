@@ -27,7 +27,8 @@ const FormWrapper = styled.div`
   align-items: center;
   background-color: white;
   position: relative;
-  padding-top: 80px;
+  padding-top: 100px;
+  padding-bottom: 40px;
   border: 1px solid rgb(235, 237, 240);
 `;
 const FormStyle = styled(Form)`

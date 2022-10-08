@@ -6,7 +6,7 @@ export default function Home() {
   const user = useSelector((state) => state.user);
   return (
     <div>
-      {user.me._id && <PostForm />}
+      <PostForm />
       {/* 포스트 map으로 렌더링 */}
       <PostCard />
     </div>

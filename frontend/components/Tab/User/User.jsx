@@ -22,8 +22,8 @@ const CoverStyle = styled.div`
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  width: 320px;
-  height: 320px;
+  width: 300px;
+  height: 300px;
   background-color: rgb(235, 237, 240);
   &:hover {
     cursor: pointer;
@@ -49,9 +49,8 @@ const User = () => {
     <>
       <Card
         style={{
-          width: 320,
-          marginBottom: 30,
-          marginRight: 5,
+          width: 300,
+          marginBottom: 50,
         }}
         cover={
           me.image ? (
@@ -101,8 +100,9 @@ const User = () => {
         onOk={handleOk}
         onCancel={handleCancel}
         centered
+        title="로그아웃"
       >
-        <div style={{ fontSize: "16px" }}>
+        <div style={{ fontSize: "16px", textAlign: "center" }}>
           <QuestionCircleTwoTone style={{ fontSize: "20px" }} />{" "}
           <span style={{ color: "rgb(64, 169, 255)" }}>{me.nickname}</span>님,
           정말 로그아웃 하시겠습니까?

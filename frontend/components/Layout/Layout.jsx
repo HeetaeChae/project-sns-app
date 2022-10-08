@@ -23,8 +23,28 @@ const NavbarWrapper = styled.div`
 `;
 const MainWrapper = styled.div`
   padding: 0 calc((100vw - 1500px) / 2);
-  margin-top: 5rem;
+  margin-top: 4rem;
   padding-top: 60px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  width: 100%;
+
+  @media screen and (max-width: 768px) {
+    display: flex;
+    flex-direction: column;
+  }
+`;
+const ChildrenWrapper = styled.div`
+  width: 75%;
+  @media screen and (max-width: 768px) {
+    width: 100%;
+  }
+`;
+const TapWrapper = styled.div`
+  @media screen and (max-width: 768px) {
+    width: 100%;
+  }
 `;
 const FooterWrapper = styled.div`
   padding: 0 calc((100vw - 1000px) / 2);
@@ -39,14 +59,10 @@ const Layout = ({ children }) => {
         <Navbar />
       </NavbarWrapper>
       <MainWrapper>
-        <Row>
-          <Col xs={24} sm={24} md={8} lg={6}>
-            <Tab />
-          </Col>
-          <Col xs={24} sm={24} md={16} lg={18}>
-            {children}
-          </Col>
-        </Row>
+        <TapWrapper>
+          <Tab />
+        </TapWrapper>
+        <ChildrenWrapper>{children}</ChildrenWrapper>
       </MainWrapper>
       <FooterWrapper>
         <Footer />

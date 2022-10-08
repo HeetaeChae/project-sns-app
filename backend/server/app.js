@@ -31,6 +31,7 @@ app.use(
     credentials: true,
   })
 );
+app.use("/", express.static("./public"));
 
 app.use("/api/user", require("./routes/user"));
 app.use("/api/post", require("./routes/post"));

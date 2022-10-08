@@ -35,9 +35,6 @@ const PostCard = () => {
     <>
       <Card
         extra="22-10-1"
-        style={{
-          marginTop: 30,
-        }}
         cover={
           /* PostImage부분 해당 포스트가 가진 이미지 배열 내려주기 */
           <PostImage image />
