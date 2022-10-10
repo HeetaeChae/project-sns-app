@@ -4,6 +4,8 @@ import { LoginOutlined, UserAddOutlined } from "@ant-design/icons";
 import { useDispatch, useSelector } from "react-redux";
 import { logInRequest } from "../../../store/modules/user";
 import styled from "styled-components";
+import axios from "axios";
+import { LOG_IN } from "../../../store/modules/user";
 
 const ButtonWrapper = styled.div`
   display: flex;
@@ -23,7 +25,18 @@ const Login = () => {
 
   const onFinish = (data) => {
     console.log(data);
-    dispatch(logInRequest(data));
+    axios
+      .post("http://localhost:7000/api/user/login", data, {
+        withCredentials: true,
+      })
+      .then((res) => {
+        if (res.data.success) {
+          console.log(res.data.doc);
+          dispatch({ type: LOG_IN, payload: res.data.doc });
+        } else {
+          console.log(res.data);
+        }
+      });
   };
 
   return (
@@ -59,7 +72,7 @@ const Login = () => {
             },
           ]}
         >
-          <Input />
+          <Input size="large" placeholder="ex )  sns@gmail.com" />
         </Form.Item>
         <Form.Item
           label="비밀번호"
@@ -71,7 +84,7 @@ const Login = () => {
             },
           ]}
         >
-          <Input.Password />
+          <Input.Password size="large" />
         </Form.Item>
         <ButtonWrapper>
           <Form.Item>

@@ -6,9 +6,11 @@ import {
   CameraOutlined,
 } from "@ant-design/icons";
 import { useDispatch, useSelector } from "react-redux";
-import { logOutRequest } from "../../../store/modules/user";
+import { logOutRequest, LOG_OUT } from "../../../store/modules/user";
 import { useState } from "react";
 import styled from "styled-components";
+import Link from "next/link";
+import axios from "axios";
 
 const { Meta } = Card;
 
@@ -34,12 +36,20 @@ const User = () => {
   const dispatch = useDispatch();
   const isLoggingOut = useSelector((state) => state.user.isLoggingOut);
   const me = useSelector((state) => state.user.me);
-  console.log(me);
+  //console.log(me);
   const [isLogoutModal, setIsLogoutModal] = useState(false);
 
   const handleOk = () => {
     setIsLogoutModal(false);
-    dispatch(logOutRequest());
+    axios
+      .get("http://localhost:7000/api/user/logout", { withCredentials: true })
+      .then((res) => {
+        if (res.data.success) {
+          dispatch({ type: LOG_OUT });
+        } else {
+          console.log(res.data);
+        }
+      });
   };
   const handleCancel = () => {
     setIsLogoutModal(false);
@@ -59,19 +69,27 @@ const User = () => {
               src="https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png"
             />
           ) : (
-            <CoverStyle>
-              <CameraOutlined
-                style={{ fontSize: "80px", marginBottom: "10px" }}
-              />
-              프로필 이미지를 등록해주세요.
-            </CoverStyle>
+            <Link href="/profile">
+              <a>
+                <CoverStyle>
+                  <CameraOutlined
+                    style={{ fontSize: "80px", marginBottom: "10px" }}
+                  />
+                  프로필 이미지를 등록해주세요.
+                </CoverStyle>
+              </a>
+            </Link>
           )
         }
         actions={[
-          <Button>
-            <UserOutlined />
-            내프로필
-          </Button>,
+          <Link href="/profile">
+            <a>
+              <Button>
+                <UserOutlined />
+                내프로필
+              </Button>
+            </a>
+          </Link>,
           isLoggingOut ? (
             <Button
               type="primary"

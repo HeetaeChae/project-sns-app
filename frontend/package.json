@@ -12,6 +12,7 @@
     "@ant-design/icons": "^4.7.0",
     "antd": "^4.23.3",
     "axios": "^1.0.0",
+    "cookie-parser": "^1.4.6",
     "dayjs": "^1.11.5",
     "multer": "^1.4.5-lts.1",
     "next": "12.3.1",
