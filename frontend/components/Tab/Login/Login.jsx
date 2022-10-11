@@ -24,7 +24,6 @@ const Login = () => {
   const router = useRouter();
 
   const onFinish = (data) => {
-    console.log(data);
     axios
       .post("http://localhost:7000/api/user/login", data, {
         withCredentials: true,

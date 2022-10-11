@@ -16,7 +16,7 @@ const CoverStyle = styled.div`
   background-color: rgb(235, 237, 240);
 `;
 
-const ProfileImage = () => {
+const ProfileImage = ({ me }) => {
   const [image, setImage] = useState("");
   return (
     <Card

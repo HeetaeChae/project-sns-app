@@ -16,7 +16,7 @@ import PostImage from "./PostImage/PostImage";
 
 const { Meta } = Card;
 
-const PostCard = () => {
+const PostCard = ({ post }) => {
   //좋아요 여부 서버로 통신한 뒤 저장.
   const [isLike, setIsLike] = useState(false);
   const onClickIsLike = useCallback(() => {
@@ -34,7 +34,8 @@ const PostCard = () => {
   return (
     <>
       <Card
-        extra="22-10-1"
+        style={{ marginTop: "10px" }}
+        extra={post.date}
         cover={
           /* PostImage부분 해당 포스트가 가진 이미지 배열 내려주기 */
           <PostImage image />
@@ -84,16 +85,19 @@ const PostCard = () => {
               }
             >
               {/* 프로필 사진 없으면 닉네임 첫글자 부분 */}
-              <Avatar src="https://joeschmoe.io/api/v1/random" />
+              {post.writer.image ? (
+                <Avatar />
+              ) : (
+                <Avatar>{post.writer.nickname[0]}</Avatar>
+              )}
             </Popover>
           }
           /* nickname 부분 */
-          title="채희태"
+          title={post.writer.nickname}
           /* email 부분 */
-          description="This is the description"
+          description={post.writer.email}
         />
-        {/* content 부분 */}
-        <div style={{ marginTop: "20px" }}>콘텐츠 내용</div>
+        <div style={{ marginTop: "20px" }}>{post.content}</div>
       </Card>
       {isComment && <Comment />}
     </>

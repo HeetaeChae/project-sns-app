@@ -4,9 +4,9 @@ import { createWrapper } from "next-redux-wrapper";
 import rootReducer from "./modules";
 
 //배포 모드일 때
-const isProduction = process.env.NODE === "production";
+const isProduction = process.env.NODE_ENV === "production";
 
-const configureStore = () => {
+const makeStore = () => {
   const middlewares = [];
   const enhancer = isProduction
     ? compose(applyMiddleware(...middlewares))
@@ -15,6 +15,6 @@ const configureStore = () => {
   return store;
 };
 
-const wrapper = createWrapper(configureStore, { debug: !isProduction });
+const wrapper = createWrapper(makeStore, { debug: !isProduction });
 
 export default wrapper;

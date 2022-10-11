@@ -2,9 +2,7 @@ import styled from "styled-components";
 import { PageHeader } from "antd";
 import ProfileHeader from "../components/ProfileHeader/ProfileHeader";
 import axios from "axios";
-import { useDispatch } from "react-redux";
 import { LOG_IN } from "../store/modules/user";
-import { useEffect } from "react";
 import wrapper from "../store/configureStore";
 
 const ProfileWrapper = styled.div`
@@ -29,7 +27,7 @@ const PageHeaderStyle = styled(PageHeader)`
   align-items: center;
 `;
 
-const profile = ({ data }) => {
+const profile = () => {
   return (
     <ProfileWrapper>
       <PageHeaderStyle title="프로필" top="0" />
@@ -37,5 +35,25 @@ const profile = ({ data }) => {
     </ProfileWrapper>
   );
 };
+
+export const getServerSideProps = wrapper.getServerSideProps(
+  (store) =>
+    async ({ req }) => {
+      const cookie = req?.headers.cookie;
+      axios.defaults.headers.Cookie = "";
+      if (req && cookie) {
+        axios.defaults.headers.Cookie = cookie;
+      }
+      try {
+        const res = await axios("http://localhost:7000/api/user/getUser", {
+          withCredentials: true,
+        });
+        const payload = await res.data.doc;
+        store.dispatch({ type: LOG_IN, payload });
+      } catch (err) {
+        console.log(err);
+      }
+    }
+);
 
 export default profile;

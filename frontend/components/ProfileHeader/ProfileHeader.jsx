@@ -1,6 +1,7 @@
 import styled from "styled-components";
+import { useSelector } from "react-redux";
 
-import ProfileChange from "./ProfileChange/ProfileChange";
+import ProfileEdit from "./ProfileEdit/ProfileEdit";
 import ProfileImage from "./ProfileImage/ProfileImage";
 
 const ProfileHeaderWrapper = styled.div`
@@ -18,12 +19,13 @@ const LineStyle = styled.div`
 `;
 
 const ProfileHeader = () => {
+  const { me } = useSelector((state) => state.user);
   return (
     <>
       <ProfileHeaderWrapper>
-        <ProfileImage />
+        <ProfileImage me={me} />
         <LineStyle />
-        <ProfileChange />
+        <ProfileEdit me={me} />
       </ProfileHeaderWrapper>
     </>
   );

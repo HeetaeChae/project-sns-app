@@ -21,7 +21,16 @@ router.post("/deletePost", (req, res) => {
   });
 });
 
-router.post("/getPost", (req, res) => {
+router.get("/getPost", (req, res) => {
+  Post.find({})
+    .populate("writer")
+    .exec((err, doc) => {
+      if (err) return res.status(400).json({ success: false, err });
+      return res.status(200).json({ success: true, doc });
+    });
+});
+
+router.post("/getMyPost", (req, res) => {
   Post.find({ _id: req.body.postId })
     .populate("writer")
     .exec((err, doc) => {

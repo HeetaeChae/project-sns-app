@@ -6,7 +6,7 @@ import {
   CameraOutlined,
 } from "@ant-design/icons";
 import { useDispatch, useSelector } from "react-redux";
-import { logOutRequest, LOG_OUT } from "../../../store/modules/user";
+import { LOG_OUT } from "../../../store/modules/user";
 import { useState } from "react";
 import styled from "styled-components";
 import Link from "next/link";

@@ -5,8 +5,18 @@ import { User } from "../models/User";
 import { auth } from "../middleware/auth";
 
 router.get("/getUser", (req, res) => {
-  const token = req.cookies.cookie;
+  const token = req.cookies.token;
   User.findOne({ token }, (err, doc) => {
+    return res.status(200).json({ success: true, doc });
+  });
+});
+
+router.post("/editUser", (req, res) => {
+  User.findOneAndUpdate(
+    { _id: req.body._id },
+    { $set: { nickname: req.body.nickname, intro: req.body.intro } }
+  ).exec((err, doc) => {
+    if (err) return res.status(400).json({ success: false, err });
     return res.status(200).json({ success: true, doc });
   });
 });
@@ -43,7 +53,7 @@ router.post("/login", (req, res) => {
 });
 
 router.get("/logout", (req, res) => {
-  const token = req.cookies.cookie;
+  const token = req.cookies.token;
   User.findOne({ token }, (err, doc) => {
     if (err) return res.json({ success: false, err });
     return res.clearCookie("token").status(200).send({ success: true, doc });
