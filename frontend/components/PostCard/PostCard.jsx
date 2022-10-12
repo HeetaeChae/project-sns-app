@@ -1,5 +1,13 @@
-import { useCallback, useState } from "react";
-import { Avatar, Card, Button, Popover, notification, Modal } from "antd";
+import { useCallback, useEffect, useState } from "react";
+import {
+  Avatar,
+  Card,
+  Button,
+  Popover,
+  notification,
+  Modal,
+  Input,
+} from "antd";
 import {
   HeartOutlined,
   HeartTwoTone,
@@ -16,39 +24,44 @@ import styled from "styled-components";
 import { useSelector, useDispatch } from "react-redux";
 import axios from "axios";
 
-import Comment from "./Comment/Comment";
+import PostComment from "./PostComment/PostComment";
 import PostImage from "./PostImage/PostImage";
 import { DELETE_POST } from "../../store/modules/post";
 
 const { Meta } = Card;
+const { TextArea } = Input;
 
 const ModalStyle = styled(Modal)`
   display: flex;
   justify-content: center;
   align-items: center;
 `;
+const CommentsWrapper = styled.div`
+  margin: 30px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+`;
 
 const PostCard = ({ post }) => {
   //좋아요 여부 서버로 통신한 뒤 저장.
   const [isLike, setIsLike] = useState(false);
-  const onClickIsLike = useCallback(() => {
-    setIsLike(!isLike);
-  }, [isLike]);
+  //코멘트 열기 여부
   const [isComment, setIsComment] = useState(false);
-  const onClickIsComment = useCallback(() => {
-    setIsComment(!isComment);
-  }, [isComment]);
   //scrap 여부 서버로 통신한 뒤 저장.
   const [isScrap, setIsScrap] = useState(false);
-  const onClickIsScrap = useCallback(() => {
-    setIsScrap(!isScrap);
-  }, [isScrap]);
 
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user);
+  const comments = useSelector((state) => state.comment);
 
   const userId = user.me._id;
   const writerId = post.writer._id;
+
+  const thisPostComments = comments.filter(
+    (comment) => comment.postId === post._id
+  );
+  console.log(thisPostComments);
 
   const [isDeleteModal, setIsDeleteModal] = useState(false);
 
@@ -79,9 +92,9 @@ const PostCard = ({ post }) => {
     });
   };
 
-  const deletePost = () => {
+  const deletePost = useCallback(() => {
     setIsDeleteModal(true);
-  };
+  }, [isDeleteModal]);
 
   const deleteOk = (id) => {
     if (userId === writerId) {
@@ -113,26 +126,32 @@ const PostCard = ({ post }) => {
         actions={[
           <>
             {isLike ? (
-              <HeartTwoTone twoToneColor="#eb2f96" onClick={onClickIsLike} />
+              <HeartTwoTone
+                twoToneColor="#eb2f96"
+                onClick={() => setIsLike(false)}
+              />
             ) : (
-              <HeartOutlined key="좋아요" onClick={onClickIsLike} />
+              <HeartOutlined key="좋아요" onClick={() => setIsLike(true)} />
             )}
             {/* 좋아요 숫자 서버에서 가져오기 */}
             <span>100</span>
           </>,
           <>
             {isScrap ? (
-              <BookFilled key="스크랩" onClick={onClickIsScrap} />
+              <BookFilled key="스크랩" onClick={() => setIsScrap(false)} />
             ) : (
-              <BookOutlined key="스크랩" onClick={onClickIsScrap} />
+              <BookOutlined key="스크랩" onClick={() => setIsScrap(true)} />
             )}
             <span>스크랩</span>
           </>,
           <>
             {isComment ? (
-              <MessageFilled key="코멘트" onClick={onClickIsComment} />
+              <MessageFilled key="코멘트" onClick={() => setIsComment(false)} />
             ) : (
-              <MessageOutlined key="코멘트" onClick={onClickIsComment} />
+              <MessageOutlined
+                key="코멘트"
+                onClick={() => setIsComment(true)}
+              />
             )}
 
             <span>코멘트</span>
@@ -183,7 +202,24 @@ const PostCard = ({ post }) => {
           </div>
         </ModalStyle>
       )}
-      {isComment && <Comment />}
+
+      {isComment && (
+        <CommentsWrapper>
+          <TextArea
+            showCount
+            maxLength={100}
+            style={{
+              height: 120,
+              padding: 30,
+              border: "1px solid rgb(242, 243, 246)",
+              backgroundColor: "white",
+            }}
+          />
+          {thisPostComments.map((comment) => {
+            return <PostComment comment={comment} />;
+          })}
+        </CommentsWrapper>
+      )}
     </>
   );
 };

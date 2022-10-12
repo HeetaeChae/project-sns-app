@@ -4,8 +4,9 @@ import { LOG_IN } from "../store/modules/user";
 import { ADD_POST } from "../store/modules/post";
 import wrapper from "../store/configureStore";
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
+import { ADD_COMMENT } from "../store/modules/comment";
 
 export default function Home() {
   const dispatch = useDispatch();
@@ -15,6 +16,14 @@ export default function Home() {
     axios.get("http://localhost:7000/api/post/getPost").then((res) => {
       if (res.data.success) {
         dispatch({ type: ADD_POST, payload: res.data.doc });
+      } else {
+        console.log(res.data.err);
+      }
+    });
+    axios.get("http://localhost:7000/api/comment/getComment").then((res) => {
+      if (res.data.success) {
+        console.log(res.data.doc);
+        dispatch({ type: ADD_COMMENT, payload: res.data.doc });
       } else {
         console.log(res.data.err);
       }

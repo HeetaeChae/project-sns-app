@@ -4,16 +4,6 @@ import multer from "multer";
 import { Post } from "../models/Post";
 const router = express.Router();
 
-/*
-router.post("/addPost", (req, res) => {
-  const post = new Post(req.body);
-  post.save((err, doc) => {
-    if (err) return res.status(400).json({ success: false, err });
-    return res.status(200).json({ success: true, doc });
-  });
-});
-*/
-
 router.post("/addPost", (req, res) => {
   const post = new Post(req.body);
   post.save((err, post) => {

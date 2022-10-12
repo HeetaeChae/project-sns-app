@@ -1,6 +1,6 @@
 //액션 타입
-export const ADD_POST = "ADD_POST";
-export const DELETE_POST = "DELETE_POST";
+export const ADD_COMMENT = "ADD_COMMENT";
+export const DELETE_COMMENT = "DELETE_COMMENT";
 
 //액션 생성자 함수
 
@@ -10,11 +10,8 @@ const initialState = [];
 //리듀서
 const post = (state = initialState, action) => {
   switch (action.type) {
-    case ADD_POST:
+    case ADD_COMMENT:
       return [...action.payload, ...state];
-    case DELETE_POST:
-      const deletedPosts = state.filter((post) => post._id !== action.payload);
-      return [...deletedPosts];
     default:
       return state;
   }
