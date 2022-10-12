@@ -4,6 +4,7 @@ import multer from "multer";
 import { Post } from "../models/Post";
 const router = express.Router();
 
+/*
 router.post("/addPost", (req, res) => {
   const post = new Post(req.body);
   post.save((err, doc) => {
@@ -11,18 +12,32 @@ router.post("/addPost", (req, res) => {
     return res.status(200).json({ success: true, doc });
   });
 });
+*/
+
+router.post("/addPost", (req, res) => {
+  const post = new Post(req.body);
+  post.save((err, post) => {
+    if (err) return res.status(400).json({ success: false, err });
+    Post.findOne({ _id: post._id })
+      .populate("writer")
+      .exec((err, doc) => {
+        if (err) return res.status(400).json({ success: false, err });
+        return res.status(200).json({ success: true, doc });
+      });
+  });
+});
 
 router.post("/deletePost", (req, res) => {
-  Post.findOneAndDelete({ _id: req.body._id }).exec((err) => {
+  console.log(req.body.id);
+  Post.findOneAndDelete({ _id: req.body.id }).exec((err, doc) => {
     if (err) return res.status(400).json({ success: false, err });
-    return res
-      .status(200)
-      .json({ success: true, message: "포스트 삭제를 완료했습니다." });
+    return res.status(200).json({ success: true, doc });
   });
 });
 
 router.get("/getPost", (req, res) => {
   Post.find({})
+    .sort({ date: -1 })
     .populate("writer")
     .exec((err, doc) => {
       if (err) return res.status(400).json({ success: false, err });

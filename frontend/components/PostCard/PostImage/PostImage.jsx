@@ -21,38 +21,35 @@ const ImageZoomButtonWrapper = styled.div`
   align-items: center;
 `;
 
-const dummyImage = [
-  "https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png",
-  "https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png",
-  "https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png",
-];
-
 const PostImage = ({ image }) => {
   const [open, setOpen] = useState(false);
-
   if (image.length === 1) {
     return (
       <ImageWrapper>
-        <Image alt="example" src={dummyImage[0]} width="100%" />
+        <Image
+          alt="example"
+          src={`http://localhost:7000/${image}`}
+          width="100%"
+        />
       </ImageWrapper>
     );
   } else if (image.length === 2) {
     return (
       <ImageWrapper>
-        <Image alt="example" src={image[0]} />
-        <Image alt="example" src={image[1]} />
+        <Image alt="example" src={`http://localhost:7000/${image[0]}`} />
+        <Image alt="example" src={`http://localhost:7000/${image[1]}`} />
       </ImageWrapper>
     );
   } else {
     return (
       <ImageWrapper>
-        <Image alt="example" src={dummyImage[0]} />
+        <Image alt="example" src={`http://localhost:7000/${image[0]}`} />
         <ImageZoomButtonWrapper>
           <Button type="primary" onClick={() => setOpen(true)}>
             <PictureOutlined />더 보기
           </Button>
         </ImageZoomButtonWrapper>
-        {open && <ImageZoom open={open} setOpen={setOpen} image={dummyImage} />}
+        {open && <ImageZoom open={open} setOpen={setOpen} image={image} />}
       </ImageWrapper>
     );
   }

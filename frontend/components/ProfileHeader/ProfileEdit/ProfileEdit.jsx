@@ -48,7 +48,7 @@ const ProfileEdit = ({ me }) => {
     axios.post("http://localhost:7000/api/user/editUser", data).then((res) => {
       if (res.data.success) {
         dispatch({ type: LOG_IN, payload: res.data.doc });
-        setIsChange(false);
+        setIsEdit(false);
         profileEditSuccess();
       } else {
         profileEditFailure();

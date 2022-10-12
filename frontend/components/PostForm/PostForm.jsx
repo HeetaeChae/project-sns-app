@@ -11,11 +11,14 @@ import ImageUpload from "../ImageUpload/ImageUplaod";
 import ImageZoom from "../PostCard/PostImage/ImageZoom/ImageZoom";
 import { useSelector } from "react-redux";
 import day from "../../hook/day";
+import { ADD_POST } from "../../store/modules/post";
+import { useDispatch } from "react-redux";
 
 const { TextArea } = Input;
 
 const PostForm = () => {
   const user = useSelector((state) => state.user);
+  const dispatch = useDispatch();
   const { me } = user;
 
   const [postText, setPostText] = useState("");
@@ -91,6 +94,7 @@ const PostForm = () => {
           addPostSuccess();
           setPostText("");
           setImage([]);
+          dispatch({ type: ADD_POST, payload: [res.data.doc] });
         } else {
           console.log(res.data);
         }
@@ -102,8 +106,6 @@ const PostForm = () => {
     }
     setOpen(true);
   }, [image]);
-  console.log(image);
-  console.log(postText);
   return (
     <>
       <Card

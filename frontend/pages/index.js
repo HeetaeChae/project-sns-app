@@ -1,17 +1,20 @@
 import PostCard from "../components/PostCard/PostCard";
 import PostForm from "../components/PostForm/PostForm";
-import { useSelector } from "react-redux";
 import { LOG_IN } from "../store/modules/user";
+import { ADD_POST } from "../store/modules/post";
 import wrapper from "../store/configureStore";
 import axios from "axios";
 import { useEffect, useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
 
 export default function Home() {
-  const [posts, setPosts] = useState([]);
+  const dispatch = useDispatch();
+  const posts = useSelector((state) => state.post);
+
   useEffect(() => {
     axios.get("http://localhost:7000/api/post/getPost").then((res) => {
       if (res.data.success) {
-        setPosts([...res.data.doc]);
+        dispatch({ type: ADD_POST, payload: res.data.doc });
       } else {
         console.log(res.data.err);
       }
@@ -21,9 +24,8 @@ export default function Home() {
   return (
     <div>
       <PostForm />
-      {/* 포스트 map으로 렌더링 */}
-      {posts.map((post) => (
-        <PostCard post={post} key={post._id} />
+      {posts.map((post, index) => (
+        <PostCard post={post} key={index} />
       ))}
     </div>
   );
@@ -42,7 +44,9 @@ export const getServerSideProps = wrapper.getServerSideProps(
           withCredentials: true,
         });
         const payload = await res.data.doc;
-        store.dispatch({ type: LOG_IN, payload });
+        if (payload) {
+          store.dispatch({ type: LOG_IN, payload });
+        }
       } catch (err) {
         console.log(err);
       }

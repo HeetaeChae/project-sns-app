@@ -109,7 +109,7 @@ const User = () => {
       >
         <Meta
           avatar={<Avatar>{me.nickname[0]}</Avatar>}
-          title={`${me.nickname}님, 반갑습니다.`}
+          title={me.nickname}
           description={me.email}
         />
       </Card>
