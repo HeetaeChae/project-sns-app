@@ -32,7 +32,7 @@ const ProfileImage = ({ me }) => {
           />
         ) : (
           <CoverStyle>
-            <UserOutlined style={{ fontSize: "80px", marginBottom: "10px" }} />
+            <UserOutlined style={{ fontSize: "70px", marginBottom: "10px" }} />
           </CoverStyle>
         )
       }

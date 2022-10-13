@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useState } from "react";
 import {
   Avatar,
   Card,
@@ -23,48 +23,32 @@ import {
 import styled from "styled-components";
 import { useSelector, useDispatch } from "react-redux";
 import axios from "axios";
-
-import PostComment from "./PostComment/PostComment";
 import PostImage from "./PostImage/PostImage";
 import { DELETE_POST } from "../../store/modules/post";
+import PostComments from "./PostComments/PostComments";
 
 const { Meta } = Card;
-const { TextArea } = Input;
 
 const ModalStyle = styled(Modal)`
   display: flex;
   justify-content: center;
   align-items: center;
 `;
-const CommentsWrapper = styled.div`
-  margin: 30px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-`;
 
 const PostCard = ({ post }) => {
-  //좋아요 여부 서버로 통신한 뒤 저장.
   const [isLike, setIsLike] = useState(false);
-  //코멘트 열기 여부
   const [isComment, setIsComment] = useState(false);
-  //scrap 여부 서버로 통신한 뒤 저장.
   const [isScrap, setIsScrap] = useState(false);
 
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user);
-  const comments = useSelector((state) => state.comment);
 
   const userId = user.me._id;
   const writerId = post.writer._id;
 
-  const thisPostComments = comments.filter(
-    (comment) => comment.postId === post._id
-  );
-  console.log(thisPostComments);
-
   const [isDeleteModal, setIsDeleteModal] = useState(false);
 
+  //포스트 삭제 알림창
   const deletePostSuccess = () => {
     notification.open({
       message: "포스트 삭제",
@@ -91,11 +75,11 @@ const PostCard = ({ post }) => {
       ),
     });
   };
-
+  //포스트 삭제 확인 모달창
   const deletePost = useCallback(() => {
     setIsDeleteModal(true);
   }, [isDeleteModal]);
-
+  //포스트 삭제 기능
   const deleteOk = (id) => {
     if (userId === writerId) {
       axios
@@ -118,9 +102,8 @@ const PostCard = ({ post }) => {
   };
 
   return (
-    <>
+    <div style={{ marginBottom: "10px" }}>
       <Card
-        style={{ marginTop: "10px" }}
         extra={`작성 ${post.date}`}
         cover={post.image.length !== 0 && <PostImage image={post.image} />}
         actions={[
@@ -202,25 +185,8 @@ const PostCard = ({ post }) => {
           </div>
         </ModalStyle>
       )}
-
-      {isComment && (
-        <CommentsWrapper>
-          <TextArea
-            showCount
-            maxLength={100}
-            style={{
-              height: 120,
-              padding: 30,
-              border: "1px solid rgb(242, 243, 246)",
-              backgroundColor: "white",
-            }}
-          />
-          {thisPostComments.map((comment) => {
-            return <PostComment comment={comment} />;
-          })}
-        </CommentsWrapper>
-      )}
-    </>
+      {isComment && <PostComments postId={post._id} />}
+    </div>
   );
 };
 

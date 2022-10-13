@@ -11,7 +11,7 @@ const initialState = [];
 const post = (state = initialState, action) => {
   switch (action.type) {
     case ADD_COMMENT:
-      return [...action.payload, ...state];
+      return [action.payload, ...state];
     default:
       return state;
   }

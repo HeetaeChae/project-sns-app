@@ -3,7 +3,6 @@ import {
   UserOutlined,
   LogoutOutlined,
   QuestionCircleTwoTone,
-  CameraOutlined,
 } from "@ant-design/icons";
 import { useDispatch, useSelector } from "react-redux";
 import { LOG_OUT } from "../../../store/modules/user";
@@ -72,10 +71,9 @@ const User = () => {
             <Link href="/profile">
               <a>
                 <CoverStyle>
-                  <CameraOutlined
-                    style={{ fontSize: "80px", marginBottom: "10px" }}
+                  <UserOutlined
+                    style={{ fontSize: "100px", marginBottom: "10px" }}
                   />
-                  프로필 이미지를 등록해주세요.
                 </CoverStyle>
               </a>
             </Link>

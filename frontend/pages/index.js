@@ -11,6 +11,7 @@ import { ADD_COMMENT } from "../store/modules/comment";
 export default function Home() {
   const dispatch = useDispatch();
   const posts = useSelector((state) => state.post);
+  const user = useSelector((state) => state.user);
 
   useEffect(() => {
     axios.get("http://localhost:7000/api/post/getPost").then((res) => {
@@ -20,19 +21,11 @@ export default function Home() {
         console.log(res.data.err);
       }
     });
-    axios.get("http://localhost:7000/api/comment/getComment").then((res) => {
-      if (res.data.success) {
-        console.log(res.data.doc);
-        dispatch({ type: ADD_COMMENT, payload: res.data.doc });
-      } else {
-        console.log(res.data.err);
-      }
-    });
   }, []);
 
   return (
     <div>
-      <PostForm />
+      {user.isLoggedIn && <PostForm />}
       {posts.map((post, index) => (
         <PostCard post={post} key={index} />
       ))}
