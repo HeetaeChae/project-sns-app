@@ -29,7 +29,9 @@ const ImageZoom = ({ open, setOpen, image }) => {
               <img
                 key={image}
                 src={`http://localhost:7000/${image}`}
-                style={{ width: "100%" }}
+                style={{
+                  width: "100%",
+                }}
               />
             </div>
           ))}

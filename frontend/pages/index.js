@@ -6,7 +6,6 @@ import wrapper from "../store/configureStore";
 import axios from "axios";
 import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { ADD_COMMENT } from "../store/modules/comment";
 
 export default function Home() {
   const dispatch = useDispatch();
@@ -26,8 +25,8 @@ export default function Home() {
   return (
     <div>
       {user.isLoggedIn && <PostForm />}
-      {posts.map((post, index) => (
-        <PostCard post={post} key={index} />
+      {posts.map((post) => (
+        <PostCard post={post} key={post._id} />
       ))}
     </div>
   );
@@ -46,7 +45,8 @@ export const getServerSideProps = wrapper.getServerSideProps(
           withCredentials: true,
         });
         const payload = await res.data.doc;
-        if (payload) {
+        const isLoggedIn = await res.data.success;
+        if (isLoggedIn) {
           store.dispatch({ type: LOG_IN, payload });
         }
       } catch (err) {

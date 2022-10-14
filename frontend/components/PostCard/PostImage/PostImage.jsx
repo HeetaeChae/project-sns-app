@@ -19,6 +19,7 @@ const ImageZoomButtonWrapper = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  background-color: rgb(242, 243, 246);
 `;
 
 const PostImage = ({ image }) => {
@@ -45,7 +46,7 @@ const PostImage = ({ image }) => {
       <ImageWrapper>
         <Image alt="example" src={`http://localhost:7000/${image[0]}`} />
         <ImageZoomButtonWrapper>
-          <Button type="primary" onClick={() => setOpen(true)}>
+          <Button onClick={() => setOpen(true)}>
             <PictureOutlined />더 보기
           </Button>
         </ImageZoomButtonWrapper>

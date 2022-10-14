@@ -3,33 +3,34 @@ import { Button, notification } from "antd";
 import { CameraOutlined, InfoCircleOutlined } from "@ant-design/icons";
 import axios from "axios";
 
+const imageUploadSuccess = () => {
+  notification.open({
+    message: "이미지 업로드",
+    description: "이미지 업로드를 성공하였습니다.",
+    icon: (
+      <InfoCircleOutlined
+        style={{
+          color: "#10e94a",
+        }}
+      />
+    ),
+  });
+};
+const imageUploadFailure = () => {
+  notification.open({
+    message: "이미지 업로드.",
+    description: "이미지 업로드를 실패했습니다.",
+    icon: (
+      <InfoCircleOutlined
+        style={{
+          color: "#e91010",
+        }}
+      />
+    ),
+  });
+};
+
 const ImageUpload = ({ image, setImage }) => {
-  const imageUploadSuccess = () => {
-    notification.open({
-      message: "이미지 업로드",
-      description: "이미지 업로드를 성공하였습니다.",
-      icon: (
-        <InfoCircleOutlined
-          style={{
-            color: "#10e94a",
-          }}
-        />
-      ),
-    });
-  };
-  const imageUploadFailure = () => {
-    notification.open({
-      message: "이미지 업로드.",
-      description: "이미지 업로드를 실패했습니다.",
-      icon: (
-        <InfoCircleOutlined
-          style={{
-            color: "#e91010",
-          }}
-        />
-      ),
-    });
-  };
   const onDrop = (files) => {
     let formData = new FormData();
     formData.append("file", files[0]);

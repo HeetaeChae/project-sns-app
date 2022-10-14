@@ -1,16 +1,6 @@
 import { useCallback, useState } from "react";
+import { Avatar, Card, Button, Popover, notification, Modal } from "antd";
 import {
-  Avatar,
-  Card,
-  Button,
-  Popover,
-  notification,
-  Modal,
-  Input,
-} from "antd";
-import {
-  HeartOutlined,
-  HeartTwoTone,
   BookOutlined,
   BookFilled,
   MessageOutlined,
@@ -26,6 +16,7 @@ import axios from "axios";
 import PostImage from "./PostImage/PostImage";
 import { DELETE_POST } from "../../store/modules/post";
 import PostComments from "./PostComments/PostComments";
+import PostLike from "./PostLike/PostLike";
 
 const { Meta } = Card;
 
@@ -107,18 +98,7 @@ const PostCard = ({ post }) => {
         extra={`작성 ${post.date}`}
         cover={post.image.length !== 0 && <PostImage image={post.image} />}
         actions={[
-          <>
-            {isLike ? (
-              <HeartTwoTone
-                twoToneColor="#eb2f96"
-                onClick={() => setIsLike(false)}
-              />
-            ) : (
-              <HeartOutlined key="좋아요" onClick={() => setIsLike(true)} />
-            )}
-            {/* 좋아요 숫자 서버에서 가져오기 */}
-            <span>100</span>
-          </>,
+          <PostLike postId={post._id} />,
           <>
             {isScrap ? (
               <BookFilled key="스크랩" onClick={() => setIsScrap(false)} />
@@ -136,7 +116,6 @@ const PostCard = ({ post }) => {
                 onClick={() => setIsComment(true)}
               />
             )}
-
             <span>코멘트</span>
           </>,
           <Button

@@ -3,23 +3,21 @@ const router = express.Router();
 
 import { Like } from "../models/Like";
 
-router.post("/add", (req, res) => {
+router.post("/addLike", (req, res) => {
   Like.find({ user: req.body.user, postId: req.body.postId }).exec(
     (err, doc) => {
       if (err) return res.status(400).json({ success: false, err });
       if (doc.length === 0) {
         const like = new Like(req.body);
         like.save((err, doc) => {
-          const likeNumber = doc.length;
           if (err) return res.status(400).json({ success: false, err });
-          return res.status(200).json({ success: true, doc: likeNumber });
+          return res.status(200).json({ success: true, doc: "likePlus" });
         });
       } else {
         const { user, postId } = doc[0];
         Like.findOneAndDelete({ user, postId }).exec((err) => {
-          const likeNumber = doc.length;
           if (err) return res.status(400).json({ success: false, err });
-          return res.status(200).json({ success: true, doc: likeNumber });
+          return res.status(200).json({ success: true, doc: "likeMinus" });
         });
       }
     }
@@ -27,10 +25,24 @@ router.post("/add", (req, res) => {
 });
 
 router.post("/getLike", (req, res) => {
-  Like.find({ postId: req.body.postId }).exec((err, doc) => {
-    const likeNumber = doc.length;
+  //postId와 같은 Like들을 가져옴.
+  Like.find({ postId: req.body.postId }).exec((err, likes) => {
     if (err) return res.status(400).json({ success: false, err });
-    return res.status(200).json({ success: true, doc: likeNumber });
+    let likeNum = 0;
+    let isLike = false;
+    //로그인을 했을 때, 해당 유저가 like를 했는지
+    if (req.body.user) {
+      likes.forEach((like) => {
+        if (like.user === req.body.user) {
+          return (isLike = true);
+        }
+      });
+    }
+    //like의 숫자가 몇 개인지
+    if (likes.length !== 0) {
+      likeNum = likes.length;
+    }
+    return res.status(200).json({ success: true, likeNum, isLike });
   });
 });
 

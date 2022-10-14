@@ -63,10 +63,7 @@ const User = () => {
         }}
         cover={
           me.image ? (
-            <img
-              alt="example"
-              src="https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png"
-            />
+            <img alt="profileImage" src={`http://localhost:7000/${me.image}`} />
           ) : (
             <Link href="/profile">
               <a>
@@ -106,7 +103,13 @@ const User = () => {
         ]}
       >
         <Meta
-          avatar={<Avatar>{me.nickname[0]}</Avatar>}
+          avatar={
+            me.image ? (
+              <Avatar src={`http://localhost:7000/${me.image}`} />
+            ) : (
+              <Avatar>{me.nickname[0]}</Avatar>
+            )
+          }
           title={me.nickname}
           description={me.email}
         />

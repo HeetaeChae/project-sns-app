@@ -40,6 +40,7 @@ const deleteCommentFailure = () => {
 
 const PostComment = ({ comment, setDeletedCommentId }) => {
   const userId = useSelector((state) => state.user.me._id);
+  const me = useSelector((state) => state.user.me);
   const writerId = comment.writer._id;
 
   const onDeleteComment = () => {
@@ -69,12 +70,18 @@ const PostComment = ({ comment, setDeletedCommentId }) => {
       </Button>
     </div>
   );
-  console.log(comment);
+
   return (
     <CommentWrapper>
       <Comment
         author={<a>{comment.writer.nickname}</a>}
-        avatar={<Avatar>{comment.writer.nickname[0]}</Avatar>}
+        avatar={
+          comment.writer.image ? (
+            <Avatar src={`http://localhost:7000/${comment.writer.image}`} />
+          ) : (
+            <Avatar>{comment.writer.nickname[0]}</Avatar>
+          )
+        }
         content={<p>{comment.comment}</p>}
         datetime={
           <Tooltip title={comment.date}>

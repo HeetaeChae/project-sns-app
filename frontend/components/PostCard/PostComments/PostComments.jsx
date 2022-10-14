@@ -1,4 +1,4 @@
-import { Avatar, Button, notification } from "antd";
+import { Avatar, Button, notification, Spin } from "antd";
 import { InfoCircleOutlined } from "@ant-design/icons";
 import styled from "styled-components";
 import { useEffect, useState, useCallback } from "react";
@@ -70,6 +70,7 @@ const PostComments = ({ postId }) => {
   const [comments, setComments] = useState([]);
   const [deletedCommentId, setDeletedCommentId] = useState("");
 
+  //댓글 불러오기
   useEffect(() => {
     axios
       .post("http://localhost:7000/api/comment/getComment", { postId })
@@ -81,13 +82,14 @@ const PostComments = ({ postId }) => {
         }
       });
   }, []);
+  //댓글 삭제하기
   useEffect(() => {
     const deletedComments = comments.filter(
       (comment) => comment._id !== deletedCommentId
     );
     setComments([...deletedComments]);
   }, [deletedCommentId]);
-
+  //댓글 추가하기
   const onSubmitComment = useCallback(() => {
     const variables = {
       writer: user.me._id,
@@ -110,40 +112,43 @@ const PostComments = ({ postId }) => {
 
   return (
     <CommentsWrapper>
-      <CommentNumStyle>{comments.length}개의 댓글</CommentNumStyle>
-      {user.isLoggedIn ? (
-        <div style={{ width: "100%" }}>
-          <InputWrapper>
-            {user.me.image ? (
-              <img src="ddddd" />
-            ) : (
-              <Avatar>{user.me.nickname[0]}</Avatar>
-            )}
-            <InputStyle
-              value={text}
-              placeholder="댓글을 입력해주세요."
-              onChange={(e) => setText(e.target.value)}
-            />
-          </InputWrapper>
-          <ButtonWrapper>
-            <Button style={{ marginRight: "5px" }} onClick={() => setText("")}>
-              취소
-            </Button>
-            <Button type="primary" onClick={onSubmitComment}>
-              등록
-            </Button>
-          </ButtonWrapper>
-        </div>
-      ) : (
-        <div>로그인 해주세요.</div>
-      )}
-      {comments.map((comment) => (
-        <PostComment
-          comment={comment}
-          key={comment._id}
-          setDeletedCommentId={setDeletedCommentId}
-        />
-      ))}
+      <>
+        <CommentNumStyle>{comments.length}개의 댓글</CommentNumStyle>
+        {user.isLoggedIn && (
+          <div style={{ width: "100%" }}>
+            <InputWrapper>
+              {user.me.image ? (
+                <Avatar src={`http://localhost:7000/${user.me.image}`} />
+              ) : (
+                <Avatar>{user.me.nickname[0]}</Avatar>
+              )}
+              <InputStyle
+                value={text}
+                placeholder="댓글을 입력해주세요."
+                onChange={(e) => setText(e.target.value)}
+              />
+            </InputWrapper>
+            <ButtonWrapper>
+              <Button
+                style={{ marginRight: "5px" }}
+                onClick={() => setText("")}
+              >
+                취소
+              </Button>
+              <Button type="primary" onClick={onSubmitComment}>
+                등록
+              </Button>
+            </ButtonWrapper>
+          </div>
+        )}
+        {comments.map((comment) => (
+          <PostComment
+            comment={comment}
+            key={comment._id}
+            setDeletedCommentId={setDeletedCommentId}
+          />
+        ))}
+      </>
     </CommentsWrapper>
   );
 };
