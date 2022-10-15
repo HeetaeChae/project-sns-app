@@ -9,15 +9,17 @@ router.post("/addLike", (req, res) => {
       if (err) return res.status(400).json({ success: false, err });
       if (doc.length === 0) {
         const like = new Like(req.body);
-        like.save((err, doc) => {
+        like.save((err) => {
           if (err) return res.status(400).json({ success: false, err });
-          return res.status(200).json({ success: true, doc: "likePlus" });
+          return res.status(200).json({ success: true, isLike: true });
         });
       } else {
-        const { user, postId } = doc[0];
-        Like.findOneAndDelete({ user, postId }).exec((err) => {
+        Like.findOneAndDelete({
+          user: req.body.user,
+          postId: req.body.postId,
+        }).exec((err) => {
           if (err) return res.status(400).json({ success: false, err });
-          return res.status(200).json({ success: true, doc: "likeMinus" });
+          return res.status(200).json({ success: true, isLike: false });
         });
       }
     }

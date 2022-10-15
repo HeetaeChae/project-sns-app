@@ -1,8 +1,6 @@
 import { useCallback, useState } from "react";
 import { Avatar, Card, Button, Popover, notification, Modal } from "antd";
 import {
-  BookOutlined,
-  BookFilled,
   MessageOutlined,
   MessageFilled,
   DeleteOutlined,
@@ -17,6 +15,7 @@ import PostImage from "./PostImage/PostImage";
 import { DELETE_POST } from "../../store/modules/post";
 import PostComments from "./PostComments/PostComments";
 import PostLike from "./PostLike/PostLike";
+import PostScrap from "./PostScrap/PostScrap";
 
 const { Meta } = Card;
 
@@ -27,17 +26,14 @@ const ModalStyle = styled(Modal)`
 `;
 
 const PostCard = ({ post }) => {
-  const [isLike, setIsLike] = useState(false);
   const [isComment, setIsComment] = useState(false);
-  const [isScrap, setIsScrap] = useState(false);
+  const [isDeleteModal, setIsDeleteModal] = useState(false);
 
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user);
 
   const userId = user.me._id;
   const writerId = post.writer._id;
-
-  const [isDeleteModal, setIsDeleteModal] = useState(false);
 
   //포스트 삭제 알림창
   const deletePostSuccess = () => {
@@ -99,24 +95,29 @@ const PostCard = ({ post }) => {
         cover={post.image.length !== 0 && <PostImage image={post.image} />}
         actions={[
           <PostLike postId={post._id} />,
-          <>
-            {isScrap ? (
-              <BookFilled key="스크랩" onClick={() => setIsScrap(false)} />
-            ) : (
-              <BookOutlined key="스크랩" onClick={() => setIsScrap(true)} />
-            )}
-            <span>스크랩</span>
-          </>,
+          <PostScrap postId={post._id} writer={writerId} />,
           <>
             {isComment ? (
-              <MessageFilled key="코멘트" onClick={() => setIsComment(false)} />
+              <MessageFilled
+                key="코멘트"
+                onClick={() => setIsComment(false)}
+                style={{
+                  marginTop: "7px",
+                  color: "#3FA9FF",
+                  fontSize: "large",
+                }}
+              />
             ) : (
               <MessageOutlined
                 key="코멘트"
                 onClick={() => setIsComment(true)}
+                style={{
+                  marginTop: "7px",
+                  color: "#3FA9FF",
+                  fontSize: "large",
+                }}
               />
             )}
-            <span>코멘트</span>
           </>,
           <Button
             style={{ marginTop: "5px" }}

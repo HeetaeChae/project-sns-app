@@ -10,6 +10,7 @@ import { useState } from "react";
 import styled from "styled-components";
 import Link from "next/link";
 import axios from "axios";
+import { useRouter } from "next/router";
 
 const { Meta } = Card;
 
@@ -33,6 +34,7 @@ const CoverStyle = styled.div`
 
 const User = () => {
   const dispatch = useDispatch();
+  const router = useRouter();
   const isLoggingOut = useSelector((state) => state.user.isLoggingOut);
   const me = useSelector((state) => state.user.me);
   //console.log(me);

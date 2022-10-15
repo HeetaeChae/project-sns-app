@@ -5,17 +5,11 @@ import ProfileEdit from "./ProfileEdit/ProfileEdit";
 import ProfileImage from "./ProfileImage/ProfileImage";
 
 const ProfileHeaderWrapper = styled.div`
-  width: 65%;
+  width: 100%;
   display: flex;
-  justify-content: space-between;
+  flex-direction: column;
   align-items: center;
-`;
-const LineStyle = styled.div`
-  height: 320px;
-  border-left: 1px solid rgb(235, 237, 240);
-  @media screen and (max-width: 1036px) {
-    display: none;
-  }
+  justify-content: center;
 `;
 
 const ProfileHeader = () => {
@@ -24,7 +18,6 @@ const ProfileHeader = () => {
     <>
       <ProfileHeaderWrapper>
         <ProfileImage me={me} />
-        <LineStyle />
         <ProfileEdit me={me} />
       </ProfileHeaderWrapper>
     </>

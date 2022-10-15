@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import Dropzone from "react-dropzone";
 import axios from "axios";
-import { Button, Card, notification } from "antd";
+import { Button, Avatar, notification } from "antd";
 import {
   UserOutlined,
   CameraOutlined,
@@ -12,13 +12,11 @@ import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { LOG_IN } from "../../../store/modules/user";
 
-const CoverStyle = styled.div`
+const ProfileImageWrapper = styled.div`
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
-  width: 200px;
-  height: 200px;
-  background-color: rgb(235, 237, 240);
+  margin-bottom: 50px;
 `;
 
 const imageUploadSuccess = () => {
@@ -85,26 +83,13 @@ const ProfileImage = ({ me }) => {
   }, [image]);
 
   return (
-    <Card
-      style={{
-        width: 200,
-        marginRight: 15,
-      }}
-      cover={
-        image ? (
-          <img
-            alt="profileImage"
-            src={`http://localhost:7000/${image}`}
-            style={{ width: "100%" }}
-          />
-        ) : (
-          <CoverStyle>
-            <UserOutlined style={{ fontSize: "65px", marginBottom: "10px" }} />
-          </CoverStyle>
-        )
-      }
-    >
-      <div style={{ textAlign: "center" }}>
+    <ProfileImageWrapper>
+      {image ? (
+        <Avatar size={200} src={`http://localhost:7000/${image}`} />
+      ) : (
+        <Avatar size={200} icon={<UserOutlined />} />
+      )}
+      <div style={{ marginLeft: "50px", textAlign: "center" }}>
         <Dropzone onDrop={onDrop}>
           {({ getRootProps, getInputProps }) => (
             <section>
@@ -112,7 +97,7 @@ const ProfileImage = ({ me }) => {
                 <input {...getInputProps()} />
                 <Button
                   type="primary"
-                  style={{ marginBottom: "10px", width: "130px" }}
+                  style={{ marginBottom: "10px", width: "120px" }}
                 >
                   <CameraOutlined />
                   이미지 등록
@@ -121,12 +106,12 @@ const ProfileImage = ({ me }) => {
             </section>
           )}
         </Dropzone>
-        <Button style={{ width: "130px" }} onClick={() => setImage("")}>
+        <Button style={{ width: "120px" }} onClick={() => setImage("")}>
           <DeleteOutlined />
           이미지 삭제
         </Button>
       </div>
-    </Card>
+    </ProfileImageWrapper>
   );
 };
 

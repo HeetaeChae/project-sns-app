@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { Button, Form, Input, notification, Tag, Badge } from "antd";
+import { Button, Form, Input, notification, Tag } from "antd";
 import { InfoCircleOutlined } from "@ant-design/icons";
 import { useState } from "react";
 import { useRouter } from "next/router";
@@ -37,13 +37,12 @@ const profileEditFailure = () => {
 const ButtonWrapper = styled.div`
   margin-top: 10px;
 `;
+
 const TagStyle = styled(Tag)`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
   width: 100%;
-  padding: 5px;
-  margin-bottom: 15px;
+  padding: 10px;
+  background-color: white;
+  font-size: 18px;
   white-space: pre-line;
 `;
 
@@ -75,14 +74,10 @@ const ProfileEdit = ({ me }) => {
   return (
     <>
       {isEdit ? (
-        <div style={{ width: "200px", marginLeft: "15px" }}>
+        <div style={{ width: "30%" }}>
           <Form onFinish={onFinish}>
             <Form.Item name="nickname">
-              <Input
-                size="large"
-                placeholder="닉네임을 입력하세요."
-                style={{ width: "100%" }}
-              />
+              <Input size="large" placeholder="닉네임을 입력하세요." />
             </Form.Item>
             <Form.Item name="intro">
               <Input.TextArea
@@ -107,26 +102,49 @@ const ProfileEdit = ({ me }) => {
           </Form>
         </div>
       ) : (
-        <div style={{ width: "200px", marginLeft: "15px" }}>
-          <TagStyle color="blue">
-            <div>닉네임 :</div>
-            <div>{me.nickname}</div>
-          </TagStyle>
-          <TagStyle color="blue">
-            <div>이메일 :</div>
-            <div>{me.email}</div>
-          </TagStyle>
-          {me.intro ? (
-            <TagStyle>{me.intro}</TagStyle>
-          ) : (
-            <TagStyle color="red">자기소개를 입력해주세요.</TagStyle>
-          )}
-          <Button
-            onClick={() => setIsEdit(true)}
-            style={{
-              marginTop: "30px",
+        <div style={{ width: "30%", textAlign: "center" }}>
+          <Form
+            labelCol={{
+              span: 24,
             }}
+            wrapperCol={{
+              span: 24,
+            }}
+            style={{ color: "red" }}
           >
+            <Form.Item
+              label={
+                <label style={{ fontSize: "18px", fontWeight: "700" }}>
+                  닉네임
+                </label>
+              }
+            >
+              <TagStyle>{me.nickname}</TagStyle>
+            </Form.Item>
+            <Form.Item
+              label={
+                <label style={{ fontSize: "18px", fontWeight: "700" }}>
+                  이메일
+                </label>
+              }
+            >
+              <TagStyle>{me.email}</TagStyle>
+            </Form.Item>
+            <Form.Item
+              label={
+                <label style={{ fontSize: "18px", fontWeight: "700" }}>
+                  자기소개
+                </label>
+              }
+            >
+              {me.intro ? (
+                <TagStyle>{me.intro}</TagStyle>
+              ) : (
+                <TagStyle color="red">자기소개를 입력해주세요.</TagStyle>
+              )}
+            </Form.Item>
+          </Form>
+          <Button onClick={() => setIsEdit(true)} style={{ marginTop: "10px" }}>
             수정
           </Button>
         </div>

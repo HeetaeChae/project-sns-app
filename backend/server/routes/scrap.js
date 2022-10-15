@@ -3,25 +3,23 @@ const router = express.Router();
 
 import { Scrap } from "../models/Scrap";
 
-router.post("/add", (req, res) => {
+router.post("/addScrap", (req, res) => {
   Scrap.find({ user: req.body.user, postId: req.body.postId }).exec(
     (err, doc) => {
       if (err) return res.status(400).json({ success: false, err });
       if (doc.length === 0) {
         const scrap = new Scrap(req.body);
-        scrap.save((err, doc) => {
+        scrap.save((err) => {
           if (err) return res.status(400).json({ success: false, err });
-          return res
-            .status(200)
-            .json({ success: true, message: "스크랩 완료" });
+          return res.status(200).json({ success: true, isScrap: true });
         });
       } else {
-        const { user, postId } = doc[0];
-        Scrap.findOneAndDelete({ user, postId }).exec((err) => {
+        Scrap.findOneAndDelete({
+          user: req.body.user,
+          postId: req.body.postId,
+        }).exec((err) => {
           if (err) return res.status(400).json({ success: false, err });
-          return res
-            .status(200)
-            .json({ success: true, message: "스크랩 삭제" });
+          return res.status(200).json({ success: true, isScrap: false });
         });
       }
     }
@@ -29,7 +27,7 @@ router.post("/add", (req, res) => {
 });
 
 router.post("/getScrap", (req, res) => {
-  Scrap.find({ user: req.body.user })
+  Scrap.findOne({ user: req.body.user, postId: req.body.postId })
     .populate({
       path: "postId",
       populate: {
@@ -37,10 +35,12 @@ router.post("/getScrap", (req, res) => {
       },
     })
     .exec((err, doc) => {
-      const scrapNumber = doc.length;
-      const postInfo = doc.map((scrapInfo) => scrapInfo.postId);
       if (err) return res.status(400).json({ success: false, err });
-      return res.status(200).json({ success: true, postInfo, scrapNumber });
+      if (doc === null) {
+        return res.status(200).json({ success: true, isScrap: false });
+      } else {
+        return res.status(200).json({ success: true, isScrap: true });
+      }
     });
 });
 

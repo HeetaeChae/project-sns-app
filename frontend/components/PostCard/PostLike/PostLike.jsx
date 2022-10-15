@@ -5,6 +5,19 @@ import { HeartTwoTone, InfoCircleOutlined } from "@ant-design/icons";
 import styled, { keyframes } from "styled-components";
 import { useSelector } from "react-redux";
 
+const addSuccess = () => {
+  notification.open({
+    message: "좋아요",
+    description: "이 포스트에 좋아요를 눌렀습니다.",
+    icon: (
+      <InfoCircleOutlined
+        style={{
+          color: "#10e94a",
+        }}
+      />
+    ),
+  });
+};
 const addFailure = () => {
   notification.open({
     message: "좋아요 실패",
@@ -20,12 +33,11 @@ const addFailure = () => {
 };
 
 const LikeWrapper = styled.div`
-  width: 100%;
-  height: 100%;
-  margin-top: 10px;
+  margin-top: 3px;
   display: flex;
   justify-content: center;
   align-items: center;
+  font-size: large;
 `;
 
 const liked = keyframes`
@@ -33,7 +45,7 @@ const liked = keyframes`
     transform: scale(.7);
   }
   50% {
-    transform: scale(1.4);
+    transform: scale(1.5);
   }
   100% {
     transform: scale(1);
@@ -53,7 +65,6 @@ const PostLike = ({ postId }) => {
       postId,
       user: user.me._id,
     };
-    console.log(variables);
     axios
       .post("http://localhost:7000/api/like/getLike", variables)
       .then((res) => {
@@ -64,7 +75,7 @@ const PostLike = ({ postId }) => {
           console.log(res.data.err);
         }
       });
-  }, []);
+  });
 
   const onClickAddLike = useCallback(() => {
     if (!user.isLoggedIn) {
@@ -78,11 +89,11 @@ const PostLike = ({ postId }) => {
       .post("http://localhost:7000/api/like/addLike", variables)
       .then((res) => {
         if (res.data.success) {
-          setIsLike(!isLike);
-          console.log(res.data.doc);
-          if (res.data.doc === "likePlus") {
+          setIsLike(res.data.isLike);
+          if (res.data.isLike) {
             setLikeNum(likeNum + 1);
-          } else if ("likeMinus") {
+            addSuccess();
+          } else if (!res.data.isLike) {
             setLikeNum(likeNum - 1);
           }
         } else {
