@@ -4,9 +4,7 @@ import {
   MessageOutlined,
   MessageFilled,
   DeleteOutlined,
-  UserAddOutlined,
   InfoCircleOutlined,
-  QuestionCircleTwoTone,
 } from "@ant-design/icons";
 import styled from "styled-components";
 import { useSelector, useDispatch } from "react-redux";
@@ -16,6 +14,7 @@ import { DELETE_POST } from "../../store/modules/post";
 import PostComments from "./PostComments/PostComments";
 import PostLike from "./PostLike/PostLike";
 import PostScrap from "./PostScrap/PostScrap";
+import PostFollow from "./PostFollow/PostFollow";
 
 const { Meta } = Card;
 
@@ -43,7 +42,7 @@ const PostCard = ({ post }) => {
       icon: (
         <InfoCircleOutlined
           style={{
-            color: "#10e94a",
+            color: "#108ee9",
           }}
         />
       ),
@@ -102,9 +101,7 @@ const PostCard = ({ post }) => {
                 key="코멘트"
                 onClick={() => setIsComment(false)}
                 style={{
-                  marginTop: "7px",
-                  color: "#3FA9FF",
-                  fontSize: "large",
+                  marginTop: "8px",
                 }}
               />
             ) : (
@@ -112,9 +109,7 @@ const PostCard = ({ post }) => {
                 key="코멘트"
                 onClick={() => setIsComment(true)}
                 style={{
-                  marginTop: "7px",
-                  color: "#3FA9FF",
-                  fontSize: "large",
+                  marginTop: "8px",
                 }}
               />
             )}
@@ -131,15 +126,12 @@ const PostCard = ({ post }) => {
       >
         <Meta
           avatar={
-            <Popover
-              content={
-                <Button>
-                  <UserAddOutlined />
-                  팔로우
-                </Button>
-              }
-            >
-              <Avatar>{post.writer.nickname[0]}</Avatar>
+            <Popover content={<PostFollow userTo={post.writer._id} />}>
+              {post.writer.image ? (
+                <Avatar src={`http://localhost:7000/${post.writer.image}`} />
+              ) : (
+                <Avatar>{post.writer.nickname[0]}</Avatar>
+              )}
             </Popover>
           }
           title={post.writer.nickname}
@@ -154,11 +146,22 @@ const PostCard = ({ post }) => {
           onCancel={deleteCancel}
           centered
           title="포스트 삭제"
+          footer={[
+            <Button key="cancel" onClick={deleteCancel}>
+              취소
+            </Button>,
+            <Button key="ok" type="primary" onClick={deleteOk}>
+              네
+            </Button>,
+          ]}
         >
-          <div style={{ fontSize: "16px", textAlign: "center" }}>
-            <QuestionCircleTwoTone style={{ fontSize: "20px" }} />
-            <br />
+          <div style={{ fontSize: "18px", textAlign: "center" }}>
             <span>
+              <span style={{ color: "rgb(64, 169, 255)" }}>
+                {user.me.nickname}
+              </span>
+              님,
+              <br />
               정말 포스트를 삭제하시겠습니까? <br />
               삭제한 포스트는 복구할 수 없습니다.
             </span>

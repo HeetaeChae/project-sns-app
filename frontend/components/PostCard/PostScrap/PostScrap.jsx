@@ -2,7 +2,11 @@ import { useState, useEffect, useCallback } from "react";
 import axios from "axios";
 import { useSelector } from "react-redux";
 import { notification } from "antd";
-import { StarTwoTone, InfoCircleOutlined } from "@ant-design/icons";
+import {
+  StarTwoTone,
+  InfoCircleOutlined,
+  StarOutlined,
+} from "@ant-design/icons";
 import styled, { keyframes } from "styled-components";
 
 const addSuccess = () => {
@@ -12,7 +16,7 @@ const addSuccess = () => {
     icon: (
       <InfoCircleOutlined
         style={{
-          color: "#10e94a",
+          color: "#108ee9",
         }}
       />
     ),
@@ -33,7 +37,8 @@ const addFailure = () => {
 };
 
 const ScrapWrapper = styled.div`
-  font-size: 20px;
+  font-size: 16px;
+  margin-top: 6px;
 `;
 
 const scraped = keyframes`
@@ -54,7 +59,6 @@ const StarTwoToneStyle = styled(StarTwoTone)`
 const PostScrap = ({ postId, writer }) => {
   const [isScrap, setIsScrap] = useState(false);
   const user = useSelector((state) => state.user);
-  console.log(user);
 
   useEffect(() => {
     const variables = {
@@ -66,7 +70,6 @@ const PostScrap = ({ postId, writer }) => {
       .post("http://localhost:7000/api/scrap/getScrap", variables)
       .then((res) => {
         if (res.data.success) {
-          console.log(res.data.isScrap);
           setIsScrap(res.data.isScrap);
         } else {
           console.log(res.data.err);
@@ -99,7 +102,7 @@ const PostScrap = ({ postId, writer }) => {
 
   return (
     <ScrapWrapper onClick={onClickAddScrap}>
-      {isScrap ? <StarTwoToneStyle twoToneColor="#ebbf2f" /> : <StarTwoTone />}
+      {isScrap ? <StarTwoToneStyle twoToneColor="#ebbf2f" /> : <StarOutlined />}
     </ScrapWrapper>
   );
 };

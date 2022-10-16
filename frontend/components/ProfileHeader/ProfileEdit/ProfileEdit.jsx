@@ -35,7 +35,11 @@ const profileEditFailure = () => {
 };
 
 const ButtonWrapper = styled.div`
-  margin-top: 10px;
+  margin-top: 30px;
+  width: 100%;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
 `;
 
 const TagStyle = styled(Tag)`
@@ -75,11 +79,39 @@ const ProfileEdit = ({ me }) => {
     <>
       {isEdit ? (
         <div style={{ width: "30%" }}>
-          <Form onFinish={onFinish}>
-            <Form.Item name="nickname">
+          <Form
+            onFinish={onFinish}
+            labelCol={{
+              span: 24,
+            }}
+            wrapperCol={{
+              span: 24,
+            }}
+          >
+            <Form.Item
+              name="nickname"
+              label={
+                <label style={{ fontSize: "18px", fontWeight: "700" }}>
+                  닉네임
+                </label>
+              }
+            >
               <Input size="large" placeholder="닉네임을 입력하세요." />
             </Form.Item>
-            <Form.Item name="intro">
+            <Form.Item
+              name="intro"
+              label={
+                <label
+                  style={{
+                    fontSize: "18px",
+                    fontWeight: "700",
+                    marginTop: "25px",
+                  }}
+                >
+                  자기소개
+                </label>
+              }
+            >
               <Input.TextArea
                 size="large"
                 rows={4}
@@ -144,9 +176,14 @@ const ProfileEdit = ({ me }) => {
               )}
             </Form.Item>
           </Form>
-          <Button onClick={() => setIsEdit(true)} style={{ marginTop: "10px" }}>
-            수정
-          </Button>
+          <ButtonWrapper>
+            <Button
+              onClick={() => setIsEdit(true)}
+              style={{ marginTop: "5px", marginBottom: "18px" }}
+            >
+              수정
+            </Button>
+          </ButtonWrapper>
         </div>
       )}
     </>

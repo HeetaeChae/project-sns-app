@@ -1,9 +1,5 @@
 import { Avatar, Card, Button, Modal } from "antd";
-import {
-  UserOutlined,
-  LogoutOutlined,
-  QuestionCircleTwoTone,
-} from "@ant-design/icons";
+import { UserOutlined, LogoutOutlined } from "@ant-design/icons";
 import { useDispatch, useSelector } from "react-redux";
 import { LOG_OUT } from "../../../store/modules/user";
 import { useState } from "react";
@@ -37,7 +33,6 @@ const User = () => {
   const router = useRouter();
   const isLoggingOut = useSelector((state) => state.user.isLoggingOut);
   const me = useSelector((state) => state.user.me);
-  //console.log(me);
   const [isLogoutModal, setIsLogoutModal] = useState(false);
 
   const handleOk = () => {
@@ -48,7 +43,7 @@ const User = () => {
         if (res.data.success) {
           dispatch({ type: LOG_OUT });
         } else {
-          console.log(res.data);
+          console.log(res.data.err);
         }
       });
   };
@@ -122,9 +117,16 @@ const User = () => {
         onCancel={handleCancel}
         centered
         title="로그아웃"
+        footer={[
+          <Button key="cancel" onClick={handleCancel}>
+            취소
+          </Button>,
+          <Button key="ok" type="primary" onClick={handleOk}>
+            네
+          </Button>,
+        ]}
       >
-        <div style={{ fontSize: "16px", textAlign: "center" }}>
-          <QuestionCircleTwoTone style={{ fontSize: "20px" }} />{" "}
+        <div style={{ fontSize: "18px", textAlign: "center" }}>
           <span style={{ color: "rgb(64, 169, 255)" }}>{me.nickname}</span>님,
           정말 로그아웃 하시겠습니까?
         </div>

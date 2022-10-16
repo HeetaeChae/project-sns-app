@@ -1,7 +1,11 @@
 import axios from "axios";
 import { useEffect, useState, useCallback } from "react";
 import { notification } from "antd";
-import { HeartTwoTone, InfoCircleOutlined } from "@ant-design/icons";
+import {
+  HeartTwoTone,
+  InfoCircleOutlined,
+  HeartOutlined,
+} from "@ant-design/icons";
 import styled, { keyframes } from "styled-components";
 import { useSelector } from "react-redux";
 
@@ -12,7 +16,7 @@ const addSuccess = () => {
     icon: (
       <InfoCircleOutlined
         style={{
-          color: "#10e94a",
+          color: "#108ee9",
         }}
       />
     ),
@@ -33,11 +37,10 @@ const addFailure = () => {
 };
 
 const LikeWrapper = styled.div`
-  margin-top: 3px;
+  margin-top: 8px;
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: large;
 `;
 
 const liked = keyframes`
@@ -111,8 +114,8 @@ const PostLike = ({ postId }) => {
         </>
       ) : (
         <>
-          <HeartTwoTone />
-          <div style={{ color: "#2f67eb", marginLeft: "10px" }}>{likeNum}</div>
+          <HeartOutlined />
+          <div style={{ marginLeft: "10px" }}>{likeNum}</div>
         </>
       )}
     </LikeWrapper>

@@ -78,6 +78,9 @@ const PostForm = () => {
     }
     addPost();
   };
+  const handleCancel = () => {
+    setAddPostModal(false);
+  };
   const addPost = useCallback(() => {
     const data = {
       writer: me._id,
@@ -139,12 +142,20 @@ const PostForm = () => {
         title="포스트 등록"
         open={addPostModal}
         onOk={handleOk}
-        onCancel={() => setAddPostModal(false)}
+        onCancel={handleCancel}
         centered="true"
+        footer={[
+          <Button key="cancel" onClick={handleCancel}>
+            취소
+          </Button>,
+          <Button key="ok" type="primary" onClick={handleOk}>
+            네
+          </Button>,
+        ]}
       >
-        <div style={{ fontSize: "16px", textAlign: "center" }}>
-          <QuestionCircleTwoTone style={{ fontSize: "20px" }} /> 포스트를 등록
-          하시겠습니까?
+        <div style={{ fontSize: "18px", textAlign: "center" }}>
+          <span style={{ color: "rgb(64, 169, 255)" }}>{me.nickname}</span>
+          님, 포스트를 등록 하시겠습니까?
         </div>
       </Modal>
       {open && <ImageZoom open={open} setOpen={setOpen} image={image} />}

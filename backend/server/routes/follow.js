@@ -3,43 +3,64 @@ const router = express.Router();
 
 import { Follow } from "../models/Follow";
 
-router.post("/add", (req, res) => {
-  if (req.body.userFrom === req.body.userTo) {
-    return res
-      .status(200)
-      .json({ success: false, message: "자신을 팔로우 할 수 없습니다." });
-  }
-  Follow.find({ userFrom: req.body.userFrom, userTo: req.body.userTo }).exec(
+router.post("/addFollow", (req, res) => {
+  Follow.findOne({ userFrom: req.body.userFrom, userTo: req.body.userTo }).exec(
     (err, doc) => {
       if (err) return res.status(400).json({ success: false, err });
-      if (doc.length === 0) {
+      if (!doc) {
         const follow = new Follow(req.body);
-        follow.save((err) => {
+        follow.save((err, doc) => {
           if (err) return res.status(400).json({ success: false, err });
-          return res
-            .status(200)
-            .json({ success: true, message: "팔로우 하였습니다." });
+          Follow.findOne({
+            userFrom: req.body.userFrom,
+            userTo: req.body.userTo,
+          })
+            .populate("userTo")
+            .exec((err, doc) => {
+              if (err) return res.status(400).json({ success: false, err });
+              return res
+                .status(200)
+                .json({ success: true, doc, isFollow: true });
+            });
         });
       } else {
-        const { userFrom, userTo } = doc[0];
-        Follow.findOneAndDelete({ userFrom, userTo }).exec((err) => {
-          if (err) return res.status(400).json({ success: false, err });
-          return res
-            .status(200)
-            .json({ success: true, message: "팔로우를 끊었습니다. " });
-        });
+        Follow.findOneAndDelete({
+          userFrom: req.body.userFrom,
+          userTo: req.body.userTo,
+        })
+          .populate("userTo")
+          .exec((err, doc) => {
+            if (err) return res.status(400).json({ success: false, err });
+            return res
+              .status(200)
+              .json({ success: true, doc, isFollow: false });
+          });
       }
     }
   );
 });
 
 router.post("/getFollow", (req, res) => {
-  Follow.find({ userFrom: req.body.userFrom })
-    .populate("userTo")
-    .exec((err, doc) => {
+  Follow.findOne({ userFrom: req.body.userFrom, userTo: req.body.userTo }).exec(
+    (err, doc) => {
       if (err) return res.status(400).json({ success: false, err });
-      const userToInfo = doc.map((userTo) => userTo.userTo);
-      return res.status(200).json({ success: true, userToInfo });
+      if (!doc) {
+        return res.status(200).json({ success: true, isFollow: false });
+      } else {
+        return res.status(200).json({ success: true, isFollow: true });
+      }
+    }
+  );
+});
+
+router.post("/getFollower", (req, res) => {
+  Follow.find({ userTo: req.body.userTo })
+    .populate("userFrom")
+    .exec((err, doc) => {
+      if (err) return res.status(400).jons({ success: false, err });
+      //역으로 내가 userFrom이고 doc이 userTo인 놈을 찾는다.
+      console.log(doc);
+      return res.status(200).json({ success: true, doc });
     });
 });
 
