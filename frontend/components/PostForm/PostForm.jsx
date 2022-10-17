@@ -92,7 +92,7 @@ const PostForm = () => {
         addPostSuccess();
         setPostText("");
         setImage([]);
-        dispatch({ type: ADD_POST, payload: [res.data.doc] });
+        dispatch({ type: ADD_POST, payload: res.data.doc });
       } else {
         console.log(res.data);
       }

@@ -30,7 +30,7 @@ const ModalStyle = styled(Modal)`
 const deletePostSuccess = () => {
   notification.open({
     message: "포스트 삭제",
-    description: "포스트 삭제를 성공하였습니다.",
+    description: "포스트를 삭제했습니다.",
     icon: (
       <InfoCircleOutlined
         style={{
@@ -44,6 +44,19 @@ const deletePostFailure = () => {
   notification.open({
     message: "포스트 삭제",
     description: "자신이 쓴 포스트만 삭제할 수 있습니다.",
+    icon: (
+      <InfoCircleOutlined
+        style={{
+          color: "#e91010",
+        }}
+      />
+    ),
+  });
+};
+const editPostFailure = () => {
+  notification.open({
+    message: "포스트 수정",
+    description: "자신이 쓴 포스트만 수정할 수 있습니다.",
     icon: (
       <InfoCircleOutlined
         style={{
@@ -90,8 +103,11 @@ const PostCard = ({ post }) => {
   const deleteCancel = () => {
     setIsDeleteModal(false);
   };
-
+  //포스트 수정 띄우기
   const editPost = () => {
+    if (user.me._id !== post.writer._id) {
+      return editPostFailure();
+    }
     setIsEdit(true);
   };
 

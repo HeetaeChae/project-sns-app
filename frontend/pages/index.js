@@ -1,7 +1,7 @@
 import PostCard from "../components/PostCard/PostCard";
 import PostForm from "../components/PostForm/PostForm";
 import { LOG_IN } from "../store/modules/user";
-import { ADD_POST } from "../store/modules/post";
+import { GET_POST } from "../store/modules/post";
 import wrapper from "../store/configureStore";
 import axios from "axios";
 import { useEffect, useState } from "react";
@@ -29,7 +29,7 @@ export default function Home() {
       .post("http://localhost:7000/api/post/getPost", { skip })
       .then((res) => {
         if (res.data.success) {
-          dispatch({ type: ADD_POST, payload: res.data.doc });
+          dispatch({ type: GET_POST, payload: res.data.doc });
           setSkip(skip + 8);
         } else {
           console.log(res.data.err);
@@ -96,7 +96,7 @@ export const getServerSideProps = wrapper.getServerSideProps(
       try {
         const res = await axios.post("http://localhost:7000/api/post/getPost");
         const payload = await res.data.doc;
-        store.dispatch({ type: ADD_POST, payload });
+        store.dispatch({ type: GET_POST, payload });
       } catch (err) {
         console.log(err);
       }
