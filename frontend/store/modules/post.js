@@ -11,7 +11,7 @@ const initialState = [];
 const post = (state = initialState, action) => {
   switch (action.type) {
     case ADD_POST:
-      return [...action.payload, ...state];
+      return [...state, ...action.payload];
     case DELETE_POST:
       const deletedPosts = state.filter((post) => post._id !== action.payload);
       return [...deletedPosts];

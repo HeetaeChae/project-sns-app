@@ -18,21 +18,33 @@ router.post("/addPost", (req, res) => {
 });
 
 router.post("/deletePost", (req, res) => {
-  console.log(req.body.id);
   Post.findOneAndDelete({ _id: req.body.id }).exec((err, doc) => {
     if (err) return res.status(400).json({ success: false, err });
     return res.status(200).json({ success: true, doc });
   });
 });
 
-router.get("/getPost", (req, res) => {
-  Post.find({})
-    .sort({ date: -1 })
-    .populate("writer")
-    .exec((err, doc) => {
-      if (err) return res.status(400).json({ success: false, err });
-      return res.status(200).json({ success: true, doc });
-    });
+router.post("/getPost", (req, res) => {
+  if (req.body.skip) {
+    Post.find({})
+      .limit(8)
+      .skip(req.body.skip)
+      .sort({ date: -1 })
+      .populate("writer")
+      .exec((err, doc) => {
+        if (err) return res.status(400).json({ success: false, err });
+        return res.status(200).json({ success: true, doc });
+      });
+  } else {
+    Post.find({})
+      .limit(8)
+      .sort({ date: -1 })
+      .populate("writer")
+      .exec((err, doc) => {
+        if (err) return res.status(400).json({ success: false, err });
+        return res.status(200).json({ success: true, doc });
+      });
+  }
 });
 
 router.post("/getMyPost", (req, res) => {

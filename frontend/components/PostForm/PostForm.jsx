@@ -4,7 +4,6 @@ import {
   UploadOutlined,
   PictureOutlined,
   InfoCircleOutlined,
-  QuestionCircleTwoTone,
 } from "@ant-design/icons";
 import axios from "axios";
 import ImageUpload from "../ImageUpload/ImageUplaod";
@@ -88,20 +87,16 @@ const PostForm = () => {
       image: image,
       date: day(),
     };
-    axios
-      .post("http://localhost:7000/api/post/addPost", data, {
-        withCredentials: true,
-      })
-      .then((res) => {
-        if (res.data.success) {
-          addPostSuccess();
-          setPostText("");
-          setImage([]);
-          dispatch({ type: ADD_POST, payload: [res.data.doc] });
-        } else {
-          console.log(res.data);
-        }
-      });
+    axios.post("http://localhost:7000/api/post/addPost", data).then((res) => {
+      if (res.data.success) {
+        addPostSuccess();
+        setPostText("");
+        setImage([]);
+        dispatch({ type: ADD_POST, payload: [res.data.doc] });
+      } else {
+        console.log(res.data);
+      }
+    });
   }, [image, postText, me]);
   const onClickImageOpen = useCallback(() => {
     if (image.length === 0) {

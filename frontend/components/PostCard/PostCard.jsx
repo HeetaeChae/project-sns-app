@@ -5,16 +5,19 @@ import {
   MessageFilled,
   DeleteOutlined,
   InfoCircleOutlined,
+  EditOutlined,
 } from "@ant-design/icons";
 import styled from "styled-components";
 import { useSelector, useDispatch } from "react-redux";
 import axios from "axios";
 import PostImage from "./PostImage/PostImage";
 import { DELETE_POST } from "../../store/modules/post";
+
 import PostComments from "./PostComments/PostComments";
 import PostLike from "./PostLike/PostLike";
 import PostScrap from "./PostScrap/PostScrap";
 import PostFollow from "./PostFollow/PostFollow";
+import PostEdit from "./PostEdit/PostEdit";
 
 const { Meta } = Card;
 
@@ -23,10 +26,38 @@ const ModalStyle = styled(Modal)`
   justify-content: center;
   align-items: center;
 `;
+//포스트 삭제 알림창
+const deletePostSuccess = () => {
+  notification.open({
+    message: "포스트 삭제",
+    description: "포스트 삭제를 성공하였습니다.",
+    icon: (
+      <InfoCircleOutlined
+        style={{
+          color: "#108ee9",
+        }}
+      />
+    ),
+  });
+};
+const deletePostFailure = () => {
+  notification.open({
+    message: "포스트 삭제",
+    description: "자신이 쓴 포스트만 삭제할 수 있습니다.",
+    icon: (
+      <InfoCircleOutlined
+        style={{
+          color: "#e91010",
+        }}
+      />
+    ),
+  });
+};
 
 const PostCard = ({ post }) => {
   const [isComment, setIsComment] = useState(false);
   const [isDeleteModal, setIsDeleteModal] = useState(false);
+  const [isEdit, setIsEdit] = useState(false);
 
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user);
@@ -34,33 +65,6 @@ const PostCard = ({ post }) => {
   const userId = user.me._id;
   const writerId = post.writer._id;
 
-  //포스트 삭제 알림창
-  const deletePostSuccess = () => {
-    notification.open({
-      message: "포스트 삭제",
-      description: "포스트 삭제를 성공하였습니다.",
-      icon: (
-        <InfoCircleOutlined
-          style={{
-            color: "#108ee9",
-          }}
-        />
-      ),
-    });
-  };
-  const deletePostFailure = () => {
-    notification.open({
-      message: "포스트 삭제",
-      description: "자신이 쓴 포스트만 삭제할 수 있습니다.",
-      icon: (
-        <InfoCircleOutlined
-          style={{
-            color: "#e91010",
-          }}
-        />
-      ),
-    });
-  };
   //포스트 삭제 확인 모달창
   const deletePost = useCallback(() => {
     setIsDeleteModal(true);
@@ -87,58 +91,72 @@ const PostCard = ({ post }) => {
     setIsDeleteModal(false);
   };
 
+  const editPost = () => {
+    setIsEdit(true);
+  };
+
   return (
     <div style={{ marginBottom: "10px" }}>
-      <Card
-        extra={`작성 ${post.date}`}
-        cover={post.image.length !== 0 && <PostImage image={post.image} />}
-        actions={[
-          <PostLike postId={post._id} />,
-          <PostScrap postId={post._id} writer={writerId} />,
-          <>
-            {isComment ? (
-              <MessageFilled
-                key="코멘트"
-                onClick={() => setIsComment(false)}
-                style={{
-                  marginTop: "8px",
-                }}
-              />
-            ) : (
-              <MessageOutlined
-                key="코멘트"
-                onClick={() => setIsComment(true)}
-                style={{
-                  marginTop: "8px",
-                }}
-              />
-            )}
-          </>,
-          <Button
-            style={{ marginTop: "5px" }}
-            onClick={deletePost}
-            type="primary"
-          >
-            <DeleteOutlined key="삭제" />
-            <span>삭제</span>
-          </Button>,
-        ]}
-      >
-        <Meta
-          avatar={
-            <Popover content={<PostFollow userTo={post.writer._id} />}>
-              {post.writer.image ? (
-                <Avatar src={`http://localhost:7000/${post.writer.image}`} />
-              ) : (
-                <Avatar>{post.writer.nickname[0]}</Avatar>
-              )}
-            </Popover>
+      {isEdit ? (
+        <PostEdit post={post} setIsEdit={setIsEdit} />
+      ) : (
+        <Card
+          extra={
+            <div style={{ color: "gray", fontSize: "12px" }}>
+              작성일 {post.date}
+            </div>
           }
-          title={post.writer.nickname}
-          description={post.writer.email}
-        />
-        <div style={{ marginTop: "20px" }}>{post.content}</div>
-      </Card>
+          cover={post.image.length !== 0 && <PostImage image={post.image} />}
+          actions={[
+            <PostLike postId={post._id} />,
+            <PostScrap postId={post._id} writer={writerId} />,
+            <>
+              {isComment ? (
+                <MessageFilled
+                  key="코멘트"
+                  onClick={() => setIsComment(false)}
+                  style={{
+                    marginTop: "8px",
+                  }}
+                />
+              ) : (
+                <MessageOutlined
+                  key="코멘트"
+                  onClick={() => setIsComment(true)}
+                  style={{
+                    marginTop: "8px",
+                  }}
+                />
+              )}
+            </>,
+            <>
+              <Button onClick={editPost} style={{ marginRight: "10px" }}>
+                <EditOutlined key="수정" />
+                수정
+              </Button>
+              <Button onClick={deletePost} type="primary">
+                <DeleteOutlined key="삭제" />
+                삭제
+              </Button>
+            </>,
+          ]}
+        >
+          <Meta
+            avatar={
+              <Popover content={<PostFollow userTo={post.writer._id} />}>
+                {post.writer.image ? (
+                  <Avatar src={`http://localhost:7000/${post.writer.image}`} />
+                ) : (
+                  <Avatar>{post.writer.nickname[0]}</Avatar>
+                )}
+              </Popover>
+            }
+            title={post.writer.nickname}
+            description={post.writer.email}
+          />
+          <div style={{ marginTop: "20px" }}>{post.content}</div>
+        </Card>
+      )}
       {isDeleteModal && (
         <ModalStyle
           open={isDeleteModal}
