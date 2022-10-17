@@ -22,9 +22,19 @@ const ImageZoomButtonWrapper = styled.div`
   background-color: rgb(242, 243, 246);
 `;
 
-const PostImage = ({ image }) => {
+const PostImage = ({ image, edit }) => {
   const [open, setOpen] = useState(false);
-  if (image.length === 1) {
+  if (edit) {
+    return (
+      <ImageWrapper>
+        <Button onClick={() => setOpen(true)}>
+          <PictureOutlined />
+          이미지 확인
+        </Button>
+        {open && <ImageZoom open={open} setOpen={setOpen} image={image} />}
+      </ImageWrapper>
+    );
+  } else if (!edit && image.length === 1) {
     return (
       <ImageWrapper>
         <Image
@@ -34,7 +44,7 @@ const PostImage = ({ image }) => {
         />
       </ImageWrapper>
     );
-  } else if (image.length === 2) {
+  } else if (!edit && image.length === 2) {
     return (
       <ImageWrapper>
         <Image alt="example" src={`http://localhost:7000/${image[0]}`} />

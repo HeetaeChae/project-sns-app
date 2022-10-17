@@ -17,6 +17,18 @@ router.post("/addPost", (req, res) => {
   });
 });
 
+router.post("/editPost", (req, res) => {
+  Post.findOneAndUpdate(
+    { _id: req.body._id },
+    { $set: { content: req.body.content, image: req.body.image } }
+  )
+    .populate("writer")
+    .exec((err, doc) => {
+      if (err) return res.status(400).json({ success: false, err });
+      return res.status(200).json({ success: true, doc });
+    });
+});
+
 router.post("/deletePost", (req, res) => {
   Post.findOneAndDelete({ _id: req.body.id }).exec((err, doc) => {
     if (err) return res.status(400).json({ success: false, err });

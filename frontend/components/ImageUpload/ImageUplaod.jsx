@@ -30,13 +30,17 @@ const imageUploadFailure = () => {
   });
 };
 
-const ImageUpload = ({ image, setImage }) => {
+const ImageUpload = ({ image, setImage, setEditImage }) => {
   const onDrop = (files) => {
     let formData = new FormData();
     formData.append("file", files[0]);
     axios.post("http://localhost:7000/api/post/image", formData).then((res) => {
       if (res.data.success) {
-        setImage([...image, res.data.fileName]);
+        if (setEditImage) {
+          setEditImage([...image, res.data.fileName]);
+        } else if (setImage) {
+          setImage([...image, res.data.fileName]);
+        }
         imageUploadSuccess();
       } else {
         imageUploadFailure();

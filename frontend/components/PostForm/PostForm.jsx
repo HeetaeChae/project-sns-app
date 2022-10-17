@@ -104,6 +104,7 @@ const PostForm = () => {
     }
     setOpen(true);
   }, [image]);
+
   return (
     <>
       <Card
