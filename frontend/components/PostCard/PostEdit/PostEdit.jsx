@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import { Button, Card, Input, notification, Modal } from "antd";
@@ -58,6 +58,8 @@ const PostEdit = ({ post, setIsEdit }) => {
 
   const [editText, setEditText] = useState(post.content);
   const [editImage, setEditImage] = useState([...post.image]);
+  //삭제할 이미지를 받아와서 삭제할 용도
+  const [deleteImage, setDeleteImage] = useState("");
   //수정완료 확인 모달창 띄우는 용도
   const [isModalOpen, setIsModalOpen] = useState(false);
   //이미지 확인용 imageZoom 컴포넌트 모달창 띄우는 용도
@@ -86,7 +88,6 @@ const PostEdit = ({ post, setIsEdit }) => {
       content: editText,
       image: editImage,
     };
-    /////////////////////////////수정한거 바로 렌더링하는거 부터 하기!
     axios.post("http://localhost:7000/api/post/editPost", data).then((res) => {
       if (res.data.success) {
         dispatch({ type: EDIT_POST, payload: res.data.doc });
@@ -105,6 +106,14 @@ const PostEdit = ({ post, setIsEdit }) => {
     //포스트 수정을 닫음
     setIsEdit(false);
   };
+
+  //이미지를 삭제하는 함수
+  useEffect(() => {
+    const deletedEditImage = editImage.filter((image) => {
+      return image !== deleteImage;
+    });
+    setEditImage([...deletedEditImage]);
+  }, [deleteImage]);
 
   return (
     <>
@@ -150,7 +159,15 @@ const PostEdit = ({ post, setIsEdit }) => {
           </Button>
         </EditMessageStyle>
       </Card>
-      {open && <ImageZoom open={open} setOpen={setOpen} image={editImage} />}
+      {open && (
+        <ImageZoom
+          open={open}
+          setOpen={setOpen}
+          image={editImage}
+          editImage="true"
+          setDeleteImage={setDeleteImage}
+        />
+      )}
       {isModalOpen && (
         <Modal
           centered

@@ -83,14 +83,15 @@ const PostCard = ({ post }) => {
     setIsDeleteModal(true);
   }, [isDeleteModal]);
   //포스트 삭제 기능
-  const deleteOk = (id) => {
+  const deleteOk = () => {
     if (userId === writerId) {
+      const variable = { postId: post._id };
       axios
-        .post("http://localhost:7000/api/post/deletePost", { id })
+        .post("http://localhost:7000/api/post/deletePost", variable)
         .then((res) => {
           if (res.data.success) {
             deletePostSuccess();
-            dispatch({ type: DELETE_POST, payload: id });
+            dispatch({ type: DELETE_POST, payload: res.data.doc });
           } else {
             console.log(res.data.err);
           }
@@ -176,7 +177,7 @@ const PostCard = ({ post }) => {
       {isDeleteModal && (
         <ModalStyle
           open={isDeleteModal}
-          onOk={() => deleteOk(post._id)}
+          onOk={deleteOk}
           onCancel={deleteCancel}
           centered
           title="포스트 삭제"

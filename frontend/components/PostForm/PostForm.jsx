@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react";
+import { useCallback, useState, useEffect } from "react";
 import { Input, Button, Card, notification, Modal } from "antd";
 import {
   UploadOutlined,
@@ -24,6 +24,7 @@ const PostForm = () => {
   const [image, setImage] = useState([]);
   const [open, setOpen] = useState(false);
   const [addPostModal, setAddPostModal] = useState(false);
+  const [deleteImage, setDeleteImage] = useState("");
 
   const imageUploadCheck = () => {
     notification.open({
@@ -105,6 +106,14 @@ const PostForm = () => {
     setOpen(true);
   }, [image]);
 
+  //이미지를 삭제하는 함수
+  useEffect(() => {
+    const deletedImage = image.filter((image) => {
+      return image !== deleteImage;
+    });
+    setImage([...deletedImage]);
+  }, [deleteImage]);
+
   return (
     <>
       <Card
@@ -154,7 +163,15 @@ const PostForm = () => {
           님, 포스트를 등록 하시겠습니까?
         </div>
       </Modal>
-      {open && <ImageZoom open={open} setOpen={setOpen} image={image} />}
+      {open && (
+        <ImageZoom
+          open={open}
+          setOpen={setOpen}
+          image={image}
+          editImage="true"
+          setDeleteImage={setDeleteImage}
+        />
+      )}
     </>
   );
 };

@@ -1,12 +1,13 @@
 import { useCallback } from "react";
 import styled from "styled-components";
 import Link from "next/link";
-import { Input } from "antd";
-
-const { Search } = Input;
+import { Button, Badge, Tag } from "antd";
+import { useSelector } from "react-redux";
+import { StarTwoTone } from "@ant-design/icons";
 
 const Navbar = () => {
-  const onSearch = useCallback(() => {}, []);
+  const scrapCount = useSelector((state) => state.scrap);
+  console.log(scrapCount);
   return (
     <>
       <Link href="/">
@@ -14,20 +15,22 @@ const Navbar = () => {
           <img
             src="/logo.png"
             alt="logo"
-            style={{ width: "60px", height: "60px" }}
+            style={{ width: "95px", height: "70px" }}
           />
         </a>
       </Link>
-      <Search
-        placeholder="내용을 입력하세요."
-        allowClear
-        enterButton="검색"
-        size="large"
-        onSearch={onSearch}
-        style={{
-          width: 600,
-        }}
-      />
+      <Link href="/scrap">
+        <a>
+          <Badge count={scrapCount}>
+            <Tag
+              color="processing"
+              style={{ fontSize: "18px", padding: "5px" }}
+            >
+              <StarTwoTone /> 스크랩
+            </Tag>
+          </Badge>
+        </a>
+      </Link>
     </>
   );
 };

@@ -8,6 +8,11 @@ import {
   StarOutlined,
 } from "@ant-design/icons";
 import styled, { keyframes } from "styled-components";
+import {
+  ADD_SCRAP_COUNT,
+  SUBTRACT_SCRAP_COUNT,
+} from "../../../store/modules/scrap";
+import { useDispatch } from "react-redux";
 
 const addSuccess = () => {
   notification.open({
@@ -59,6 +64,8 @@ const StarTwoToneStyle = styled(StarTwoTone)`
 const PostScrap = ({ postId, writer }) => {
   const [isScrap, setIsScrap] = useState(false);
   const user = useSelector((state) => state.user);
+  const scrapCount = useSelector((state) => state.scrap);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const variables = {
@@ -93,6 +100,11 @@ const PostScrap = ({ postId, writer }) => {
           setIsScrap(res.data.isScrap);
           if (res.data.isScrap) {
             addSuccess();
+            dispatch({ type: ADD_SCRAP_COUNT });
+          } else {
+            if (scrapCount > 0) {
+              dispatch({ type: SUBTRACT_SCRAP_COUNT });
+            }
           }
         } else {
           console.log(res.data.err);

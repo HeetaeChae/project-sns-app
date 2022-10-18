@@ -17,9 +17,21 @@ const post = (state = initialState, action) => {
     case ADD_POST:
       return [action.payload, ...state];
     case DELETE_POST:
-      const deletedPosts = state.filter((post) => post._id !== action.payload);
+      const deletedPosts = state.filter(
+        (post) => post._id !== action.payload._id
+      );
       return [...deletedPosts];
     case EDIT_POST:
+      const editedPost = state.map((post) =>
+        post._id === action.payload._id
+          ? {
+              ...post,
+              content: action.payload.content,
+              image: [...action.payload.image],
+            }
+          : post
+      );
+      return [...editedPost];
     default:
       return state;
   }

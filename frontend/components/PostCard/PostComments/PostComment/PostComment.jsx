@@ -64,10 +64,7 @@ const PostComment = ({ comment, setDeletedCommentId }) => {
 
   const content = (
     <div style={{ display: "flex" }}>
-      <Button style={{ marginRight: "5px" }}>수정</Button>
-      <Button type="primary" onClick={onDeleteComment}>
-        삭제
-      </Button>
+      <Button onClick={onDeleteComment}>삭제</Button>
     </div>
   );
 

@@ -73,7 +73,6 @@ const ProfileEdit = ({ me }) => {
           profileEditFailure();
         }
       });
-    router.push("/");
   };
   return (
     <>

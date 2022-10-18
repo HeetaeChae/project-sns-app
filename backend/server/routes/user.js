@@ -19,7 +19,8 @@ router.post("/editUser", (req, res) => {
   if (req.body.editType === "info") {
     User.findOneAndUpdate(
       { _id: req.body._id },
-      { $set: { nickname: req.body.nickname, intro: req.body.intro } }
+      { $set: { nickname: req.body.nickname, intro: req.body.intro } },
+      { new: true }
     ).exec((err, doc) => {
       if (err) return res.status(400).json({ success: false, err });
       return res.status(200).json({ success: true, doc });
@@ -27,7 +28,8 @@ router.post("/editUser", (req, res) => {
   } else if (req.body.editType === "image") {
     User.findOneAndUpdate(
       { _id: req.body._id },
-      { $set: { image: req.body.image } }
+      { $set: { image: req.body.image } },
+      { new: true }
     ).exec((err, doc) => {
       if (err) return res.status(400).json({ success: false, err });
       return res.status(200).json({ success: true, doc });

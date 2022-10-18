@@ -27,7 +27,7 @@ router.post("/addScrap", (req, res) => {
 });
 
 router.post("/getScrap", (req, res) => {
-  Scrap.findOne({ user: req.body.user, postId: req.body.postId })
+  Scrap.find({ user: req.body.user })
     .populate({
       path: "postId",
       populate: {
@@ -36,12 +36,15 @@ router.post("/getScrap", (req, res) => {
     })
     .exec((err, doc) => {
       if (err) return res.status(400).json({ success: false, err });
-      if (doc === null) {
-        return res.status(200).json({ success: true, isScrap: false });
-      } else {
-        return res.status(200).json({ success: true, isScrap: true });
-      }
+      return res.status(200).json({ success: true, doc });
     });
+});
+
+router.post("/deleteScrap", (req, res) => {
+  Scrap.findByIdAndDelete({ _id: req.body.scrapId }).exec((err, doc) => {
+    if (err) return res.status(400).json({ success: false, err });
+    return res.status(200).json({ success: true, doc });
+  });
 });
 
 module.exports = router;

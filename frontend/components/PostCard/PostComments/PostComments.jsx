@@ -1,5 +1,5 @@
 import { Avatar, Button, notification } from "antd";
-import { InfoCircleOutlined, CommentOutlined } from "@ant-design/icons";
+import { InfoCircleOutlined } from "@ant-design/icons";
 import styled from "styled-components";
 import { useEffect, useState, useCallback } from "react";
 import axios from "axios";

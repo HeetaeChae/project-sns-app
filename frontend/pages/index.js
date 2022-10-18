@@ -6,8 +6,9 @@ import wrapper from "../store/configureStore";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { Spin } from "antd";
+import { Spin, notification } from "antd";
 import styled from "styled-components";
+import { InfoCircleOutlined } from "@ant-design/icons";
 
 const SpinWrapper = styled.div`
   width: 100%;
@@ -15,6 +16,20 @@ const SpinWrapper = styled.div`
   justify-content: center;
   margin-top: 50px;
 `;
+
+const getPostFailure = () => {
+  notification.open({
+    message: "포스트 로딩",
+    description: "마지막 포스트입니다.",
+    icon: (
+      <InfoCircleOutlined
+        style={{
+          color: "#e91010",
+        }}
+      />
+    ),
+  });
+};
 
 export default function Home() {
   const dispatch = useDispatch();
@@ -29,6 +44,9 @@ export default function Home() {
       .post("http://localhost:7000/api/post/getPost", { skip })
       .then((res) => {
         if (res.data.success) {
+          if (res.data.doc.length === 0) {
+            getPostFailure();
+          }
           dispatch({ type: GET_POST, payload: res.data.doc });
           setSkip(skip + 8);
         } else {
@@ -48,12 +66,10 @@ export default function Home() {
   };
 
   useEffect(() => {
-    if (posts.length % 8 === 0) {
-      window.addEventListener("scroll", handleScroll);
-      return () => {
-        window.removeEventListener("scroll", handleScroll);
-      };
-    }
+    window.addEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
   });
 
   return (
