@@ -1,4 +1,4 @@
-import { InfoCircleOutlined } from "@ant-design/icons";
+import { InfoCircleOutlined, DeleteOutlined } from "@ant-design/icons";
 import { Avatar, Button, List, notification, Result } from "antd";
 import axios from "axios";
 import { useSelector } from "react-redux";
@@ -111,8 +111,10 @@ const ScrapCard = ({ scraps, setDeleteScrap }) => {
                   <Button
                     style={{ marginTop: "25px" }}
                     onClick={() => deleteScrap(scrap._id)}
+                    type="primary"
+                    danger
                   >
-                    스크랩에서 삭제
+                    <DeleteOutlined /> 스크랩 삭제
                   </Button>
                 }
               />

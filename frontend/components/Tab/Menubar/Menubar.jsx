@@ -1,11 +1,7 @@
 import { Menu, Badge, Card } from "antd";
-import {
-  HomeOutlined,
-  BookOutlined,
-  TeamOutlined,
-  HeartTwoTone,
-} from "@ant-design/icons";
+import { UsergroupAddOutlined } from "@ant-design/icons";
 import Follower from "./Follower/Follower";
+import Following from "./Following/Following";
 
 const Menubar = () => {
   return (
@@ -16,33 +12,18 @@ const Menubar = () => {
           width: "300px",
         }}
       >
-        <Menu
-          mode="inline"
+        <Card
+          title="팔로우"
+          extra={<UsergroupAddOutlined style={{ fontSize: "18px" }} />}
+          size="large"
           style={{
             width: 300,
           }}
         >
-          <Menu.Item key="home" icon={<HomeOutlined />}>
-            홈
-          </Menu.Item>
-          <Menu.Item key="scrap" icon={<BookOutlined />}>
-            스크랩
-          </Menu.Item>
-          <Menu.Item key="follow" icon={<TeamOutlined />}>
-            팔로우
-          </Menu.Item>
-          <Badge.Ribbon text="Like" color="pink">
-            <Card title="받은 좋아요 수" size="small">
-              <HeartTwoTone
-                twoToneColor="#eb2f96"
-                style={{ margin: "0 10px", fontSize: "1rem" }}
-              />
-              10k
-            </Card>
-          </Badge.Ribbon>
-        </Menu>
+          <Follower />
+          <Following />
+        </Card>
       </div>
-      <Follower />
     </>
   );
 };

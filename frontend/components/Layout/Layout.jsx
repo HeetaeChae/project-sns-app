@@ -6,7 +6,7 @@ import Footer from "./Footer/Footer";
 import Tab from "../Tab/Tab";
 
 const LayoutWrapper = styled.div`
-  background-color: rgb(249, 249, 249);
+  background-color: rgb(250, 250, 249);
 `;
 const NavbarWrapper = styled.div`
   padding: 0 calc((100vw - 1000px) / 2);

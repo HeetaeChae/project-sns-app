@@ -9,6 +9,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { Spin, notification } from "antd";
 import styled from "styled-components";
 import { InfoCircleOutlined } from "@ant-design/icons";
+import Head from "next/head";
 
 const SpinWrapper = styled.div`
   width: 100%;
@@ -74,6 +75,11 @@ export default function Home() {
 
   return (
     <div>
+      <Head>
+        <title>SNS-APP | 홈</title>
+        <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+        <link rel="icon" href="/logo.png" />
+      </Head>
       {user.isLoggedIn && <PostForm />}
       {posts.map((post) => (
         <PostCard post={post} key={post._id} />

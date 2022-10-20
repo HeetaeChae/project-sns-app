@@ -6,6 +6,7 @@ import { useSelector } from "react-redux";
 import wrapper from "../store/configureStore";
 import { LOG_IN } from "../store/modules/user";
 import ScrapCard from "../components/ScrapCard/ScrapCard";
+import Head from "next/head";
 
 const ScrapWrapper = styled.div`
   width: 100%;
@@ -54,12 +55,19 @@ const scrap = () => {
     setScraps([...deletedScraps]);
   }, [deleteScrap]);
   return (
-    <ScrapWrapper>
-      <PageHeaderStyle title="스크랩" top="0" />
-      <ScrapCardWrapper>
-        <ScrapCard scraps={scraps} setDeleteScrap={setDeleteScrap} />
-      </ScrapCardWrapper>
-    </ScrapWrapper>
+    <>
+      <Head>
+        <title>SNS-APP | 스크랩</title>
+        <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+        <link rel="icon" href="/logo.png" />
+      </Head>
+      <ScrapWrapper>
+        <PageHeaderStyle title="스크랩" top="0" />
+        <ScrapCardWrapper>
+          <ScrapCard scraps={scraps} setDeleteScrap={setDeleteScrap} />
+        </ScrapCardWrapper>
+      </ScrapWrapper>
+    </>
   );
 };
 

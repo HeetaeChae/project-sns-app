@@ -71,10 +71,9 @@ const PostScrap = ({ postId, writer }) => {
     const variables = {
       postId,
       user: user.me._id,
-      writer,
     };
     axios
-      .post("http://localhost:7000/api/scrap/getScrap", variables)
+      .post("http://localhost:7000/api/scrap/getIsScrap", variables)
       .then((res) => {
         if (res.data.success) {
           setIsScrap(res.data.isScrap);

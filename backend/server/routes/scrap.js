@@ -40,6 +40,19 @@ router.post("/getScrap", (req, res) => {
     });
 });
 
+router.post("/getIsScrap", (req, res) => {
+  Scrap.find({ user: req.body.user, postId: req.body.postId }).exec(
+    (err, doc) => {
+      if (err) return res.status(400).json({ success: false, err });
+      if (doc.length !== 0) {
+        return res.status(200).json({ success: true, isScrap: true });
+      } else {
+        return res.status(200).json({ success: true, isScrap: false });
+      }
+    }
+  );
+});
+
 router.post("/deleteScrap", (req, res) => {
   Scrap.findByIdAndDelete({ _id: req.body.scrapId }).exec((err, doc) => {
     if (err) return res.status(400).json({ success: false, err });

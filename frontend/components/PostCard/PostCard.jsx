@@ -26,6 +26,22 @@ const ModalStyle = styled(Modal)`
   justify-content: center;
   align-items: center;
 `;
+const ButtonWrapper = styled.div`
+  @media screen and (max-width: 1300px) {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+  }
+`;
+const ButtonStyle = styled(Button)`
+  margin-right: 10px;
+  @media screen and (max-width: 1300px) {
+    margin-right: 0;
+    margin-bottom: 10px;
+  }
+`;
+
 //포스트 삭제 알림창
 const deletePostSuccess = () => {
   notification.open({
@@ -146,16 +162,16 @@ const PostCard = ({ post }) => {
                 />
               )}
             </>,
-            <>
-              <Button onClick={editPost} style={{ marginRight: "10px" }}>
+            <ButtonWrapper>
+              <ButtonStyle onClick={editPost}>
                 <EditOutlined key="수정" />
                 수정
-              </Button>
-              <Button onClick={deletePost} type="primary">
+              </ButtonStyle>
+              <Button onClick={deletePost} type="primary" danger>
                 <DeleteOutlined key="삭제" />
                 삭제
               </Button>
-            </>,
+            </ButtonWrapper>,
           ]}
         >
           <Meta

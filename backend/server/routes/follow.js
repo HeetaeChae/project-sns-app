@@ -54,12 +54,21 @@ router.post("/getFollow", (req, res) => {
 });
 
 router.post("/getFollower", (req, res) => {
-  Follow.find({ userTo: req.body.userTo })
+  Follow.find({ userTo: req.body.userId })
+    //여기서 찾은 doc중에 userFrom팔로우 중에 내 id가 userFrom이면 내가 팔로우 한 사람임.
+    //doc을 userTo로 놓고 user
     .populate("userFrom")
     .exec((err, doc) => {
       if (err) return res.status(400).jons({ success: false, err });
-      //역으로 내가 userFrom이고 doc이 userTo인 놈을 찾는다.
-      console.log(doc);
+      return res.status(200).json({ success: true, doc });
+    });
+});
+
+router.post("/getFollowing", (req, res) => {
+  Follow.find({ userFrom: req.body.userId })
+    .populate("userTo")
+    .exec((err, doc) => {
+      if (err) return res.status(400).jons({ success: false, err });
       return res.status(200).json({ success: true, doc });
     });
 });

@@ -9,6 +9,7 @@ import {
 import styled from "styled-components";
 import axios from "axios";
 import day from "../hook/day";
+import Head from "next/head";
 
 const layout = {
   labelCol: {
@@ -104,112 +105,119 @@ const Signup = () => {
   };
 
   return (
-    <FormWrapper>
-      <PageHeaderStyle title="회원가입" top="0" />
-      <FormStyle
-        {...layout}
-        onFinish={onFinish}
-        scrollToFirstError="true"
-        initialValues={{ remember: true }}
-        size="large"
-        autoComplete="on"
-      >
-        <FormItemStyle
-          colon="false"
-          hasFeedback="true"
-          name="email"
-          label="이메일"
-          rules={[
-            {
-              required: true,
-              type: "email",
-              message: "이메일을 입력해주세요.",
-            },
-          ]}
+    <>
+      <Head>
+        <title>SNS-APP | 회원가입</title>
+        <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+        <link rel="icon" href="/logo.png" />
+      </Head>
+      <FormWrapper>
+        <PageHeaderStyle title="회원가입" top="0" />
+        <FormStyle
+          {...layout}
+          onFinish={onFinish}
+          scrollToFirstError="true"
+          initialValues={{ remember: true }}
+          size="large"
+          autoComplete="on"
         >
-          <Input />
-        </FormItemStyle>
-        <FormItemStyle
-          name="nickname"
-          label="닉네임"
-          rules={[
-            {
-              required: true,
-              message: "닉네임을 입력해주세요.",
-            },
-          ]}
+          <FormItemStyle
+            colon="false"
+            hasFeedback="true"
+            name="email"
+            label="이메일"
+            rules={[
+              {
+                required: true,
+                type: "email",
+                message: "이메일을 입력해주세요.",
+              },
+            ]}
+          >
+            <Input />
+          </FormItemStyle>
+          <FormItemStyle
+            name="nickname"
+            label="닉네임"
+            rules={[
+              {
+                required: true,
+                message: "닉네임을 입력해주세요.",
+              },
+            ]}
+          >
+            <Input />
+          </FormItemStyle>
+          <FormItemStyle
+            name="password"
+            label="비밀번호"
+            rules={[
+              {
+                required: true,
+                message: "비밀번호를 입력해주세요.",
+              },
+            ]}
+          >
+            <Input.Password />
+          </FormItemStyle>
+          <FormItemStyle
+            name="passwordCheck"
+            label="비밀번호 확인"
+            rules={[
+              {
+                required: true,
+                message: "비밀번호 확인을 입력해주세요.",
+              },
+            ]}
+          >
+            <Input.Password />
+          </FormItemStyle>
+          <FormItemStyle name="introduction" label="짧은 자기소개">
+            <Input.TextArea />
+          </FormItemStyle>
+          <ButtonWrapper>
+            <Button type="primary" htmlType="submit" size="large">
+              <UserAddOutlined />
+              회원등록
+            </Button>
+          </ButtonWrapper>
+        </FormStyle>
+        <Modal
+          centered
+          open={isSuccessModal}
+          onOk={handleOk}
+          onCancel={handleCancel}
+          width={1000}
         >
-          <Input />
-        </FormItemStyle>
-        <FormItemStyle
-          name="password"
-          label="비밀번호"
-          rules={[
-            {
-              required: true,
-              message: "비밀번호를 입력해주세요.",
-            },
-          ]}
-        >
-          <Input.Password />
-        </FormItemStyle>
-        <FormItemStyle
-          name="passwordCheck"
-          label="비밀번호 확인"
-          rules={[
-            {
-              required: true,
-              message: "비밀번호 확인을 입력해주세요.",
-            },
-          ]}
-        >
-          <Input.Password />
-        </FormItemStyle>
-        <FormItemStyle name="introduction" label="짧은 자기소개">
-          <Input.TextArea />
-        </FormItemStyle>
-        <ButtonWrapper>
-          <Button type="primary" htmlType="submit" size="large">
-            <UserAddOutlined />
-            회원등록
-          </Button>
-        </ButtonWrapper>
-      </FormStyle>
-      <Modal
-        centered
-        open={isSuccessModal}
-        onOk={handleOk}
-        onCancel={handleCancel}
-        width={1000}
-      >
-        <div style={{ textAlign: "center" }}>
-          <CheckCircleTwoTone
-            twoToneColor="#52c41a"
+          <div style={{ textAlign: "center" }}>
+            <CheckCircleTwoTone
+              twoToneColor="#52c41a"
+              style={{
+                fontSize: "50px",
+                marginBottom: "20px",
+              }}
+            />
+          </div>
+          <div
             style={{
-              fontSize: "50px",
+              fontSize: "30px",
               marginBottom: "20px",
+              textAlign: "center",
             }}
-          />
-        </div>
-        <div
-          style={{
-            fontSize: "30px",
-            marginBottom: "20px",
-            textAlign: "center",
-          }}
-        >
-          회원가입이{" "}
-          <span style={{ fontSize: "35px", color: "green" }}>완료</span>{" "}
-          되었습니다.
-        </div>
-        <div style={{ textAlign: "center", fontSize: "16px" }}>
-          <span style={{ fontSize: "20px", color: "green" }}>{nickname}</span>
-          님, 회원가입을 축하합니다.
-          <br />
-          로그인 해주세요 <SmileOutlined />
-        </div>
-      </Modal>
-    </FormWrapper>
+          >
+            회원가입이{" "}
+            <span style={{ fontSize: "35px", color: "green" }}>완료</span>{" "}
+            되었습니다.
+          </div>
+          <div style={{ textAlign: "center", fontSize: "16px" }}>
+            <span style={{ fontSize: "20px", color: "green" }}>{nickname}</span>
+            님, 회원가입을 축하합니다.
+            <br />
+            로그인 해주세요 <SmileOutlined />
+          </div>
+        </Modal>
+      </FormWrapper>
+    </>
   );
 };
 

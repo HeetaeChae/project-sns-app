@@ -4,6 +4,7 @@ import ProfileHeader from "../components/ProfileHeader/ProfileHeader";
 import axios from "axios";
 import { LOG_IN } from "../store/modules/user";
 import wrapper from "../store/configureStore";
+import Head from "next/head";
 
 const ProfileWrapper = styled.div`
   width: 100%;
@@ -29,10 +30,17 @@ const PageHeaderStyle = styled(PageHeader)`
 
 const profile = () => {
   return (
-    <ProfileWrapper>
-      <PageHeaderStyle title="프로필" top="0" />
-      <ProfileHeader />
-    </ProfileWrapper>
+    <>
+      <Head>
+        <title>SNS-APP | 프로필</title>
+        <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+        <link rel="icon" href="/logo.png" />
+      </Head>
+      <ProfileWrapper>
+        <PageHeaderStyle title="프로필" top="0" />
+        <ProfileHeader />
+      </ProfileWrapper>
+    </>
   );
 };
 
